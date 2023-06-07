@@ -1,0 +1,118 @@
+﻿
+@{
+    ViewData["Title"] = "GetAllAdvertising";
+    Layout = "~/Areas/Manager/Views/Shared/_LayoutManagement.cshtml";
+}
+@model List<AdvertisingViewModel>
+@section Sheets{
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="description" content="Materialize is a Material Design Admin Template,It's modern, responsive and based on Material Design by Google.">
+    <meta name="keywords" content="materialize, admin template, dashboard template, flat admin template, responsive admin template, eCommerce dashboard, analytic dashboard">
+    <meta name="author" content="ThemeSelect">
+    <title>لیست حقوق </title>
+
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css-rtl/pages/page-knowledge.min.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/pages/advance-ui-media.min.css">
+    <!-- BEGIN: VENDOR CSS-->
+
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/flag-icon/css/flag-icon.min.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/data-tables/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/data-tables/extensions/responsive/css/responsive.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/data-tables/css/select.dataTables.min.css">
+    <!-- END: VENDOR CSS-->
+    <!-- BEGIN: Page Level CSS-->
+
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/pages/data-tables.min.css">
+    <!-- END: Page Level CSS-->
+    <style>
+        #data-table-simple_filter {
+            display: none;
+        }
+
+        #data-table-simple_length {
+            display: none;
+        }
+
+        #data-table-simple_paginate {
+            display: none;
+        }
+    </style>
+
+}
+
+<div class="row">
+    <div class="col s12 m12 l12">
+        <div id="button-trigger" class="card card card-default scrollspy">
+            <div class="card-content">
+                <h4 class="card-title">لیست عکس ها</h4>
+                <div class="row">
+
+                    <div class="col s12">
+                        <table id="data-table-simple" class="display">
+                            <thead>
+                                <tr>
+                                    <th>لینک</th>
+                                    <th>محل عکس </th>
+                                    <th>عکس </th>
+                                    <th>عملیات </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    foreach (var i in Model)
+                                    {
+                                        <tr>
+                                            <td>@i.title</td>
+                                            <td>@i.txt</td>
+
+                                            <td><img class="materialboxed" src="~/Images/Advertising/@i.AdvertisingSrc" width="100" alt="" /></td>
+                                            
+                                        </tr>
+
+                                    }
+                                }
+
+
+
+
+
+                            <tfoot>
+                                <tr>
+
+                                    <th>لینک</th>
+
+                                    <th>محل عکس </th>
+                                    <th>عکس </th>
+                                    <th>عملیات </th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section script{
+
+    <!-- BEGIN PAGE VENDOR JS-->
+    <script src="~/app-assets/vendors/data-tables/js/jquery.dataTables.min.js"></script>
+    <script src="~/app-assets/vendors/data-tables/extensions/responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/app-assets/vendors/data-tables/js/dataTables.select.min.js"></script>
+    <!-- END PAGE VENDOR JS-->
+    <!-- BEGIN PAGE LEVEL JS-->
+    <script src="~/app-assets/js/scripts/data-tables.min.js"></script>
+    <!-- END PAGE LEVEL JS-->
+    <script src="~/app-assets/js/scripts/advance-ui-modals.min.js"></script>
+    <script src="~/app-assets/js/scripts/advance-ui-modals.min.js"></script>
+    <script src="~/app-assets/js/scripts/eCommerce-products-page.min.js"></script>
+    <script src="~/app-assets/vendors/noUiSlider/nouislider.min.js"></script>
+    <script src="~/app-assets/js/scripts/advance-ui-media.min.js"></script>
+
+}
+

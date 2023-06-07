@@ -1,0 +1,185 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var scondImage = Model.ImageSrc.Skip(1).Take(1).Single();
+    var therdImage =Model.ImageSrc.Count()>2? Model.ImageSrc.Skip(2).Take(1).FirstOrDefault(): " ";
+}
+@model DetailMainViewModel
+
+@section Sheet{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://static.neshan.org/sdk/leaflet/1.4.0/leaflet.css" rel="stylesheet" type="text/css">
+    <script src="https://static.neshan.org/sdk/leaflet/1.4.0/leaflet.js" type="text/javascript"></script>
+}
+<!-- Page content-->
+<!-- Page header-->
+<section class="container pt-5 mt-5">
+    <!-- Breadcrumb-->
+    <nav class="mb-3 pt-md-3" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="city-guide-home-v1.html">خانه</a></li>
+            <li class="breadcrumb-item"><a href="city-guide-catalog.html">جستجوی اقامتگاه</a></li>
+            <li class="breadcrumb-item active" aria-current="page">هتل تجاری برلین</li>
+        </ol>
+    </nav>
+    <div class="d-sm-flex align-items-center justify-content-between mb-4 pb-sm-2">
+        <h1 class="h2 me-3 mb-sm-0">@Model.Name</h1>
+        <div class="text-nowrap">
+            <button onclick="AddFavorite(@Model.id)" class="btn btn-icon btn-light-primary btn-xs shadow-sm rounded-circle" type="button" data-bs-toggle="tooltip" title="نشان کردن"><i class="fi-heart"></i></button>
+            
+        </div>
+    </div>
+    <!-- Nav pills-->
+    <ul class="nav nav-pills border-bottom pb-3 mb-4">
+        <li class="nav-item"><a class="nav-link d-flex align-items-center active" href="~/Bussiness/DetailBussinessMain?id=@Model.id"><i class="fi-image me-2"></i>گالری تصاویر</a></li>
+        <li class="nav-item"><a class="nav-link d-flex align-items-center" href="~/Bussiness/DetailBussinessInfo?id=@Model.id"><i class="fi-info-circle me-2"></i>اطلاعات</a></li>
+        <li class="nav-item"><a class="nav-link d-flex align-items-center" href="~/Bussiness/DetailBussinessReviews?id=@Model.id"><i class="fi-edit me-2"></i>نظرات</a></li>
+    </ul>
+</section>
+<!-- Gallery-->
+<section class="container overflow-auto mb-5" data-simplebar>
+    <!--<div class="row g-2 g-md-3 gallery" data-thumbnails="true" style="min-width: 30rem;">-->
+    @*<div class="col-8"><a class="gallery-item rounded rounded-md-3" href="~/Images/Product/@Model.ImageSrc.FirstOrDefault()" data-sub-html="&lt;h6 class=&quot;fs-sm text-light&quot;&gt;@Model.ImageSrc.FirstOrDefault()&lt;/h6&gt;"><img src="~/Images/Product/@Model.ImageSrc.FirstOrDefault()" alt="Gallery thumbnail"></a></div>
+        <div class="col-4"><a class="gallery-item rounded rounded-md-3 mb-2 mb-md-3" href="~/Images/Product/@scondImage" data-sub-html="&lt;h6 class=&quot;fs-sm text-light&quot;&gt;~/Images/Product/@scondImage&lt;/h6&gt;"><img src="~/Images/Product/~/Images/Product/@scondImage" alt="Gallery thumbnail"></a><a class="gallery-item rounded rounded-md-3" href="~/Images/Product/@therdImage" data-sub-html="&lt;h6 class=&quot;fs-sm text-light&quot;&gt;@therdImage&lt;/h6&gt;"><img src="~/Images/Product/@therdImage" alt="Gallery thumbnail"></a></div>
+        <div class="col-12">*@
+    @*<div class="row g-2 g-md-3">
+            @foreach (var item in Model.ImageSrc.Skip(3))
+            {
+                <div class="col"><a class="gallery-item rounded-1 rounded-md-2" href="~/Images/Product/@item" data-sub-html="&lt;h6 class=&quot;fs-sm text-light&quot;&gt;@item &lt;/h6&gt;"><img src="~/Images/Product/@item" alt="Gallery thumbnail"></a></div>
+
+            }
+        </div>*@
+    <!--<div class="row g-2 g-md-3">
+                <div class="col"><a class="gallery-item rounded-1 rounded-md-2" href="img/city-guide/single/04.jpg" data-sub-html="&lt;h6 class=&quot;fs-sm text-light&quot;&gt;اتاق کار&lt;/h6&gt;"><img src="img/city-guide/single/th04.jpg" alt="Gallery thumbnail"></a></div>
+                <div class="col"><a class="gallery-item rounded-1 rounded-md-2" href="~/SiteFile/img/city-guide/single/05.jpg" data-sub-html="&lt;h6 class=&quot;fs-sm text-light&quot;&gt;اتاق مستر&lt;/h6&gt;"><img src="img/city-guide/single/th05.jpg" alt="Gallery thumbnail"></a></div>
+                <div class="col"><a class="gallery-item rounded-1 rounded-md-2" href="~/SiteFile/img/city-guide/single/06.jpg" data-sub-html="&lt;h6 class=&quot;fs-sm text-light&quot;&gt;سرویس بهداشتی&lt;/h6&gt;"><img src="img/city-guide/single/th06.jpg" alt="Gallery thumbnail"></a></div>
+
+            </div>
+        </div>
+    </div>-->
+    <div class="row g-2 g-md-3 gallery" data-thumbnails="true" style="min-width: 30rem;">
+        <div class="col-8"><a class="gallery-item rounded rounded-md-3" href="~/SiteFile/img/city-guide/single/01.jpg" data-sub-html="&lt;h6 class=&quot;fs-sm text-light&quot;&gt;اتاق کودک&lt;/h6&gt;"><img src="~/SiteFile/img/city-guide/single/01.jpg" alt="Gallery thumbnail"></a></div>
+        <div class="col-4"><a class="gallery-item rounded rounded-md-3 mb-2 mb-md-3" href="~/SiteFile/img/city-guide/single/02.jpg" data-sub-html="&lt;h6 class=&quot;fs-sm text-light&quot;&gt;اتاق خواب&lt;/h6&gt;"><img src="~/SiteFile/img/city-guide/single/02.jpg" alt="Gallery thumbnail"></a><a class="gallery-item rounded rounded-md-3" href="~/SiteFile/img/city-guide/single/03.jpg" data-sub-html="&lt;h6 class=&quot;fs-sm text-light&quot;&gt;اداری&lt;/h6&gt;"><img src="~/SiteFile/img/city-guide/single/03.jpg" alt="Gallery thumbnail"></a></div>
+       
+    </div>
+</section>
+<!-- Page content-->
+<section class="container pb-5 mb-md-4">
+    <div class="row">
+        <div class="col-md-7 mb-md-0 mb-3">
+            <div class="card py-2 px-sm-4 px-3 shadow-sm">
+                <div class="card-body mx-n2">
+                    <!-- Place info-->
+                    <div class="d-flex align-items-start mb-3 pb-3 border-bottom">
+                        <img src="img/city-guide/brands/hotel.svg" width="60" alt="Thumbnail">
+                        <div class="pe-2 me-1">
+                            <h3 class="h5 mb-2"> @Model.Name</h3>
+                            <ul class="list-unstyled d-flex flex-wrap fs-sm">
+                                <li class="me-2 mb-1 pe-1"><i class="fi-star-filled mt-n1 ms-1 text-warning align-middle opacity-70"></i><b>@Model.Score </b></li>
+                                <li class="me-2 mb-1 pe-1"><i class="fi-wallet mt-n1 ms-1 align-middle opacity-70"></i>@Model.lowPrice تومان</li>
+                                <li class="me-2 mb-1 pe-1"><i class="fi-map-pin mt-n1 ms-1 align-middle opacity-70"></i>@Model.City</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Place contacts-->
+                    <div class="mb-3 pb-3 border-bottom">
+                        <h4 class="h5 mb-2">تماس با ما: </h4>
+                        <ul class="nav row row-cols-sm-2 row-cols-1 gy-1">
+                            <li class="col"><a class="nav-link p-0 fw-normal d-flex align-items-start" href="#"><i class="fi-map-pin mt-1 me-2 align-middle opacity-70"></i>@Model.Address</a></li>
+                            <li class="col"><a class="nav-link d-inline-block p-0 fw-normal d-inline-flex align-items-start" href="tel:@Model.phoneNumber"><i class="fi-phone mt-1 me-2 align-middle opacity-70"></i>@Model.phoneNumber</a></li>
+                            <li class="col"><a class="nav-link p-0 fw-normal d-flex align-items-start" href="@Model.websiteUrl"><i class="fi-globe mt-1 me-2 align-middle opacity-60"></i>@Model.websiteUrl</a></li>
+                            <li class="col"><a class="nav-link p-0 fw-normal d-flex align-items-start" href="@Model.Email"><i class="fi-mail mt-1 me-2 align-middle opacity-70"></i>@Model.Email</a></li>
+                        </ul>
+                    </div>
+                    <!-- Place pricing-->
+                    <div class="mb-3 pb-3 border-bottom">
+                        <div class="row row-cols-sm-2 row-cols-1">
+                            <div class="col mb-sm-0 mb-3">
+                                <h4 class="h5 mb-0"><span class="fs-5">@Model.lowPrice-@Model.maxPrice تومان </span><span class="fs-base fw-normal text-body">/شب</span></h4>
+                            </div>
+                            <div class="col"><a class="btn btn-primary btn-lg rounded-pill w-sm-auto w-100" href="~/Order/bookBussiness?id=@Model.id">رزرو هتل<i class="fi-chevron-right fs-sm ms-2"></i></a></div>
+                        </div>
+                    </div>
+                    <!-- Follow-->
+                    <div class="d-flex align-items-center">
+                        <h4 class="h5 mb-0 me-3">دنبال کردن: </h4>
+                        <div class="text-nowrap">
+                            @foreach (var social in Model.product_Socials)
+                            {
+                                <a class="btn btn-icon btn-light-primary btn-xs shadow-sm rounded-circle me-2" href="@social.SocialMediaSrc"><i class="fi-@social.SocialMediaName"></i></a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Location (Map)-->
+        <div class="col-md-5">
+            <div class="form-label fw-bold pt-3 pb-2">مشاهده روی نقشه</div>
+            <div id="map" style="height: 300px;width:750px;"></div>
+        </div>
+    </div>
+</section>
+<!-- Recently viewed-->
+<section class="container pb-5 mb-lg-4">
+    <div class="d-flex align-items-center justify-content-between mb-4 pb-2">
+        <h2 class="h3 mb-0">آخرین بازدید</h2><a class="btn btn-link fw-normal ms-sm-3 p-0" href="city-guide-catalog.html">مشاهده همه<i class="fi-arrow-long-left ms-2"></i></a>
+    </div>
+    <div class="tns-carousel-wrapper tns-controls-outside-xxl tns-nav-outside mb-xxl-2">
+        <div class="tns-carousel-inner" data-carousel-options="{&quot;items&quot;: 3, &quot;gutter&quot;: 24, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:1,&quot;nav&quot;:true},&quot;500&quot;:{&quot;items&quot;:2},&quot;850&quot;:{&quot;items&quot;:3},&quot;1400&quot;:{&quot;items&quot;:3,&quot;nav&quot;:false}}}">
+            @foreach (var related in Model.RelatedBussiness)
+            {
+                <!-- Item-->
+                <div>
+                    <div class="position-relative">
+                        <div class="position-relative mb-3">
+                            <button href="~/Bussiness/DetailBussinessMain?id=@related.BussinessId" class="btn btn-icon btn-light-primary btn-xs text-primary rounded-circle position-absolute top-0 end-0 m-3 zindex-5" type="button" data-bs-toggle="tooltip" data-bs-placement="right" title="نشان کردن"><i class="fi-heart"></i></button><img class="rounded-3" src="~/Images/Product/@related.Src" alt="Article img">
+                        </div>
+                        <h3 class="mb-2 fs-lg"><a class="nav-link stretched-link" href="#">@related.Name</a></h3>
+                        <ul class="list-inline mb-0 fs-sm">
+                            <li class="list-inline-item pe-1"><i class="fi-star-filled mt-n1 ms-1 fs-base text-warning align-middle"></i><b>@related.Score</b><span class="text-muted">&nbsp;</span></li>
+                            <li class="list-inline-item pe-1"><i class="fi-credit-card mt-n1 ms-1 fs-base text-muted align-middle"></i>@related.LowPrice تومان</li>
+                            <li class="list-inline-item pe-1"><i class="fi-map-pin mt-n1 ms-1 fs-base text-muted align-middle"></i>@related.City</li>
+                        </ul>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+<script>
+    function AddFavorite(id) {
+        alert("SAdadasd");
+        $.ajax({
+            url: "~/PersonInformation/AddFavorite",
+            data: { "id": id },
+            success=function (data) {
+
+            }
+        });
+    }
+</script>
+<script>
+    var latitude = JSON.parse(@Html.Raw(Json.Serialize(Model.latitude)));
+
+    var longitude =JSON.parse(@Html.Raw(Json.Serialize(Model.longitude)));;
+
+    var myMap = new L.Map('map', {
+        key: 'web.0672d81da5734d0f8f35ce7beb9637f2',
+        maptype: 'dreamy',
+        poi: true,
+        traffic: false,
+        center: [latitude, longitude],
+        zoom: 15,
+
+    });
+    var marker = L.marker([latitude, longitude]).addTo(myMap);
+    myMap.on('click', function (data) {
+        marker.bindPopup(address).openPopup();
+        marker.setLatLng([latitude, longitude]);
+        //set map center to address
+    });
+</script>
+@section script{
+    <script src="/SiteFile/vendor/leaflet/dist/leaflet.js"></script>
+
+}

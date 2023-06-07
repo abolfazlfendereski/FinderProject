@@ -1,0 +1,1284 @@
+﻿@model AddBussinessViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+   
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Sheet{
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="mask-icon" color="#5bbad5" href="/SiteFile/safari-pinned-tab.svg">
+    <link rel="stylesheet" media="screen" href="/SiteFile/vendor/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" media="screen" href="/SiteFile/vendor/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css" />
+    <link rel="stylesheet" media="screen" href="/SiteFile/vendor/filepond/dist/filepond.min.css" />
+    <link rel="stylesheet" media="screen" href="/SiteFile/vendor/prismjs/themes/prism.css" />
+    <link rel="stylesheet" media="screen" href="/SiteFile/vendor/prismjs/plugins/toolbar/prism-toolbar.css" />
+    <link rel="stylesheet" media="screen" href="/SiteFile/vendor/simplebar/dist/simplebar.min.css" />
+    <link rel="stylesheet" media="screen" href="/SiteFile/vendor/prismjs/plugins/line-numbers/prism-line-numbers.css" />
+    <link rel="stylesheet" media="screen" href="/SiteFile/vendor/lightgallery.js/dist/css/lightgallery.min.css" />
+    <link rel="stylesheet" media="screen" href="/SiteFile/vendor/tiny-slider/dist/tiny-slider.css" />
+    <!-- Page loading scripts-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://static.neshan.org/sdk/leaflet/1.4.0/leaflet.css" rel="stylesheet" type="text/css">
+    <script src="https://static.neshan.org/sdk/leaflet/1.4.0/leaflet.js" type="text/javascript"></script>
+}
+
+<div class="modal fade" id="preview-modal" tabindex="-1">
+    <div class="modal-dialog modal-fullscreen" role="document">
+        <div class="modal-content">
+            <div class="modal-header d-block d-sm-flex">
+                <h3 class="fs-base text-muted fw-normal modal-title d-none d-sm-block">مشاهده پیش نمایش</h3>
+                <div class="d-flex align-items-center">
+                    <a class="btn btn-primary btn-sm ms-4" href="city-guide-business-promotion.html">ذخیره </a>
+                    <button class="btn-close ms-0" type="button" data-bs-dismiss="modal"></button>
+                </div>
+            </div>
+            <div class="modal-body p-0">
+                <div class="container mt-2 mt-sm-0 py-4 py-sm-5">
+                    <h1 id="BName" class="h2 mb-2 font-vazir">هتل تجاری برلین</h1>
+                    <p id="BAddress" class="mb-4 fs-lg">فرانکفورت، خیابان اصلی پلاک 45</p>
+                    <div class="overflow-auto pb-3 px-2 mx-n2 mb-4" data-simplebar>
+                        <div id="PictureModal" class="row g-2 g-md-3" style="min-width: 30rem;">
+                            <div class="col-4">
+                                <img id="ModalImage2" class="rounded rounded-md-3 mb-2 mb-md-3" src="~/SiteFile/img/city-guide/single/02.jpg" alt="Gallery thumbnail">
+                                <img id="ModalImage3" class="rounded rounded-md-3" src="~/SiteFile/img/city-guide/single/03.jpg" alt="Gallery thumbnail">
+                            </div>
+                            <div class="col-8">
+                                <img class="rounded rounded-md-3" id="ModalImage1" src="~/SiteFile/img/city-guide/single/01.jpg" alt="Gallery thumbnail">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-7 mb-md-0 mb-4">
+                            <span class="badge bg-success me-2 mb-3">تایید</span><span class="badge bg-info me-2 mb-3">جدید</span>
+                            <h2 id="BPrice" class="h4 mb-4 pb-4 border-bottom">5000-12000 تومان<span class="d-inline-block ms-1 fs-base fw-normal text-body">/هر شب</span></h2>
+                            <!-- About-->
+                            <div class="mb-4 pb-md-3">
+                                <h3 class="h5">درباره خدمات</h3>
+                                <p id="BDecription" class="mb-1">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد.</p>
+
+                            </div>
+                            <div id="featureB">
+                                <div class="col s12 m6 l10">
+                                    <h4 class="card-title">ویژگی های خدمات</h4>
+                                </div>
+                                <div id="showFeature" class="col s12 m6 display-flex justify-content-between">
+
+                                </div>
+                            </div>
+                            <!-- Amenities-->
+                            <div class="mb-4 pb-md-3">
+                                <h2 class="h5">امکانات رفاهی</h2>
+                                <ul id="emkanatModal" class="list-unstyled row row-cols-lg-3 row-cols-md-2 row-cols-1 gy-1 mb-1 text-nowrap">
+                                </ul>
+
+                            </div>
+                            <!-- Room types-->
+                            <div class="mb-4 pb-md-3" id="roomtypeModal">
+                                <h2 class="h5">انواع اتاق</h2>
+                                <ul id="typeUlModal" class="list-unstyled row row-cols-lg-3 row-cols-md-2 row-cols-1 gy-1 mb-1 text-nowrap">
+                                    <li class="col"><i class="fi-no-smoke mt-n1 me-2 fs-lg align-middle"></i>اتاق خواب</li>
+                                    <li class="col"><i class="fi-single-bed mt-n1 me-2 fs-lg align-middle"></i>پذیرایی</li>
+                                    <li class="col"><i class="fi-double-bed mt-n1 me-2 fs-lg align-middle"></i>اتاق کودک</li>
+                                </ul>
+                            </div>
+                            <!-- Awards-->
+                            <div class="pb-md-3" id="javayezmodal">
+                                <h2 class="h5">جوایز اعطا شده</h2>
+                                <ul class="list-unstyled">
+                                    <li class="d-flex align-items-center mb-2">
+                                        <img class="flex-shrink-0 me-2" src="~/SiteFile/img/city-guide/single/awards/01.jpg" width="40" alt="Award logo">
+                                        <div>2020 انتخاب مسافر</div>
+                                    </li>
+                                    <li class="d-flex align-items-center mb-2">
+                                        <img class="flex-shrink-0 me-2" src="~/SiteFile/img/city-guide/single/awards/02.jpg" width="40" alt="Award logo">
+                                        <div>دریافت بهترین کیفیت 2020</div>
+                                    </li>
+                                    <li class="d-flex align-items-center mb-2">
+                                        <img class="flex-shrink-0 me-2" src="~/SiteFile/img/city-guide/single/awards/03.jpg" width="40" alt="Award logo">
+                                        <div>خالد حسینی تو رمان باد بادک باز</div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- Sidebar-->
+                        <aside class="col-md-5">
+                            <!-- Place card-->
+                            <article class="card mb-4 p-2 shadow-sm">
+                                <div class="card-body">
+                                    <!-- Place info-->
+                                    <div class="d-flex align-items-start mb-3 pb-2 border-bottom">
+                                        <img class="rounded-circle" src="~/SiteFile/img/city-guide/brands/hotel.svg" width="60" alt="Place thumbnail">
+                                        <div class="pe-2 me-1">
+                                            <h3 id="NameB" class="h5 mb-2">هتل تجاری برلین</h3>
+                                            <ul class="list-unstyled d-flex flex-wrap fs-sm">
+                                                <li class="me-2 mb-1 pe-1"><i class="fi-star-filled mt-n1 ms-1 text-warning align-middle opacity-70"></i><b>4.9 </b>(48)</li>
+                                                <li class="me-2 mb-1 pe-1"><i class="fi-wallet mt-n1 ms-1 align-middle opacity-70"></i>45000 تومان</li>
+                                                <li class="me-2 mb-1 pe-1"><i class="fi-map-pin mt-n1 ms-1 align-middle opacity-70"></i>1.4 کیلومتر از دریا</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!-- Place contacts-->
+                                    <div class="mb-3 pb-3 border-bottom">
+                                        <h4 class="h5 mb-2">تماس با ما:</h4>
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item mb-2"><a id="AddressB" class="nav-link p-0 fw-normal d-flex align-items-start" href="#"><i class="fi-map-pin mt-1 me-2 align-middle opacity-70"></i>فرانکفورت، خیابان اصلی پلاک 45</a></li>
+                                            <li class="nav-item mb-2"><a id="telPhone" class="nav-link d-inline-block p-0 fw-normal" href="tel:3025550208">(302) 555-0208</a></li>
+                                            <li class="nav-item mb-2"><a id="SiteModal" class="nav-link p-0 fw-normal d-flex align-items-start" href="#"><i class="fi-globe mt-1 me-2 align-middle opacity-60"></i>bb-hotel.com</a></li>
+                                            <li class="nav-item"><a id="emailModal" class="nav-link p-0 fw-normal d-flex align-items-start" href="mailto:bb-hotel@example.com"><i class="fi-mail mt-1 me-2 align-middle opacity-70"></i>bb-hotel@example.com</a></li>
+                                        </ul>
+                                    </div>
+                                    <!-- Place pricing-->
+                                    <div class="mb-3 pb-4 border-bottom">
+                                        <div class="row row-cols-1">
+                                            <div class="col mb-3">
+                                                <h4 class="h6 mb-0"><span id="PriceB" class="fs-4">500-1000 تومان&nbsp; </span><span class="fs-base fw-normal text-body">/هر شب</span></h4>
+                                            </div>
+                                            <div class="col">
+                                                <button class="btn btn-primary btn-lg rounded-pill w-sm-auto w-100" type="button">رزرو هتل<i class="fi-chevron-right fs-sm ms-2"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Follow-->
+                                    <div class="d-flex align-items-center">
+                                        <h4 class="h5 mb-0 me-3">دنبال کردن</h4>
+                                        <div class="text-nowrap"><a id="FacebookModal" class="btn btn-icon btn-light-primary btn-xs shadow-sm rounded-circle me-2" href="#"><i class="fi-facebook"></i></a><a id="InstagramModal" class="btn btn-icon btn-light-primary btn-xs shadow-sm rounded-circle me-2" href="#"><i class="fi-instagram"></i></a><a id="twitterModal" class="btn btn-icon btn-light-primary btn-xs shadow-sm rounded-circle" href="#"><i class="fi-twitter"></i></a></div>
+                                    </div>
+                                </div>
+                            </article>
+                        </aside>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page container-->
+<div class="container mt-5 mb-md-4 py-5">
+    <div class="row">
+
+        <!-- Page content-->
+        <div class="col-lg-8 register-business">
+            <!-- Breadcrumb-->
+            <nav class="mb-3 pt-2 pt-lg-3" aria-label="Breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/Home/index">خانه</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">ثبت کسب و کار</li>
+                </ol>
+            </nav>
+            <!-- Title-->
+            <div class="mb-4">
+                <h1 class="h4 font-vazir mb-0">ثبت کسب کار</h1>
+                <div class="d-lg-none pt-3 mb-2">33% محتوا تکمیل شده است</div>
+                <div class="progress d-lg-none mb-4" style="height: .25rem;">
+                    <div class="progress-bar bg-danger" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+
+            <!-- Basic info-->
+            <section class="card card-body border-0 shadow-sm p-4 mb-4" id="basic-info">
+                <h2 class="h5 mb-4"><i class="fi-info-circle text-primary fs-5 mt-n1 me-2"></i>اطلاعات پایه</h2>
+                <div class="mb-3">
+                    <label class="form-label" for="ab-title">نام تجاری رسمی <span class="text-danger">*</span></label>
+                    <input class="form-control" type="text" id="NameBussiness" value="هتل تجاری برلین" placeholder="نام تجاری رسمی را وارد کنید" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">دسته بندی <span class="text-danger">*</span></label>
+                    <div class="btn-group d-block dropdown" data-bs-toggle="select">
+                        <button class="btn btn-outline-secondary col-md-6 col-12 d-flex align-items-center
+justify-content-between ps-3 fw-normal dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="dropdown-toggle-label">اقامتگاه و بوم گردی</span>
+                        </button>
+                        <input type="hidden">
+                        <div class="dropdown-menu w-100 my-1 p-3">
+                            <div class="row row-cols-md-5 row-cols-sm-3 row-cols-2 g-2">
+                                @if (Model.Category == null)
+                                {
+                                    <h4>دسته بندی ای وجود ندارد</h4>
+                                }
+                                else
+                                {
+                                    foreach (var item in Model.Category)
+                                    {
+
+                                        <div class="col">
+                                            <button onclick="subChange(@item.id)" class="dropdown-item btn btn-outline-secondary border-0 d-block p-3 text-center" type="button"><i class="@item.iconCate mb-1 fs-2 text-primary"></i><span id="Category" class="dropdown-item-label d-block fs-sm">@item.Name</span></button>
+                                        </div>
+
+                                    }
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="subcategory">زیر دسته <span class="text-danger">*</span></label>
+
+                    <select class="form-select" onchange="selectCate()" id="subcategory" name="subcategory" required>
+                        <option>لطفا زیر دسته بندی را انتخاب نمایید</option>
+
+                    </select>
+                </div>
+            </section>
+            <!-- Location-->
+            <section class="card card-body border-0 shadow-sm p-4 mb-4" id="location">
+                <h2 class="h5 mb-4"><i class="fi-map-pin text-primary fs-5 mt-n1 me-2"></i>موقعیت مکانی</h2>
+                <div class="row">
+                    <div class="col-sm-6 mb-3">
+                        <label class="form-label" for="ab-country">کشور / منطقه <span class="text-danger">*</span></label>
+                        <select class="form-select" id="ab-country" required>
+                            <option value="Berlin" selected>ایران</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-6 mb-3">
+                        <label class="form-label" for="State-city">استان<span class="text-danger">*</span></label>
+                        <select class="form-select" name="state" onChange="iranwebsv(this.value);" id="State-city" required>
+                            <option value="0">لطفا استان را انتخاب نمایید</option>
+                            <option value="1">تهران</option>
+                            <option value="2">گیلان</option>
+                            <option value="3">آذربایجان شرقی</option>
+                            <option value="4">خوزستان</option>
+                            <option value="5">فارس</option>
+                            <option value="6">اصفهان</option>
+                            <option value="7">خراسان رضوی</option>
+                            <option value="8">قزوین</option>
+                            <option value="9">سمنان</option>
+                            <option value="10">قم</option>
+                            <option value="11">مرکزی</option>
+                            <option value="12">زنجان</option>
+                            <option value="13">مازندران</option>
+                            <option value="14">گلستان</option>
+                            <option value="15">اردبیل</option>
+                            <option value="16">آذربایجان غربی</option>
+                            <option value="17">همدان</option>
+                            <option value="18">کردستان</option>
+                            <option value="19">کرمانشاه</option>
+                            <option value="20">لرستان</option>
+                            <option value="21">بوشهر</option>
+                            <option value="22">کرمان</option>
+                            <option value="23">هرمزگان</option>
+                            <option value="24">چهارمحال و بختیاری</option>
+                            <option value="25">یزد</option>
+                            <option value="26">سیستان و بلوچستان</option>
+                            <option value="27">ایلام</option>
+                            <option value="28">کهگلویه و بویراحمد</option>
+                            <option value="29">خراسان شمالی</option>
+                            <option value="30">خراسان جنوبی</option>
+                            <option value="31">البرز</option>
+
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-8 mb-3">
+                        <label class="form-label" for="City">شهرستان <span class="text-danger">*</span></label>
+                        <select class="form-select" id="City" required>
+                        </select>
+                    </div>
+                    <div class="col-sm-4 mb-3">
+                        <label class="form-label" for="ab-zip">کد پستی <span class="text-danger">*</span></label>
+                        <input class="form-control" type="text" id="postalCode" placeholder="کد پستی خود را وارد کنید" value="13127" required>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="ab-address">آدرس <span class="text-danger">*</span></label>
+                    <input class="form-control" onfocusout="textinput()" type="text" id="address" value="" required>
+                </div>
+                <div class="form-label fw-bold pt-3 pb-2">مشاهده روی نقشه</div>
+                <div id="map" style="height: 300px;width:750px;"></div>
+            </section>
+            <!-- Contacts-->
+            <section class="card card-body border-0 shadow-sm p-4 mb-4" id="contacts">
+                <h2 class="h5 mb-4"><i class="fi-phone text-primary fs-5 mt-n1 me-2"></i>راه های ارتباطی</h2>
+                <div class="row">
+                    <div class="col-sm-6 mb-3">
+                        <label class="form-label" for="EmailB">پست الکترونیکی <span class="text-danger">*</span></label>
+                        <input class="form-control" type="email" id="EmailB" placeholder="ایمیل خود را وارد کنید" required>
+                    </div>
+                    <div class="col-sm-6 mb-3">
+                        <label class="form-label" for="ab-phone">شماره تلفن <span class="text-danger">*</span></label>
+                        <input class="form-control" type="tel" id="PhoneNumber" placeholder="شماره تلفن خود را وارد کنید" required>
+                    </div>
+                    <div class="col-12 mb-3 pb-3">
+                        <label class="form-label" for="siteB">وب سایت</label>
+                        <input class="form-control" type="url" id="siteB" placeholder="آدرس وب سایت خود را وارد کنید">
+                    </div>
+                    <div class="col-12" id="SocialMedia">
+                        <label class="form-label mb-3 fw-bold">شبکه های اجتماعی</label>
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="btn btn-icon btn-light btn-xs shadow-sm rounded-circle pe-none flex-shrink-0 me-3">
+                                <i class="fi-facebook text-body"></i>
+                            </div>
+                            <input class="form-control" id="FaceBook" name="facebook" type="text" placeholder="اکانت فیسبوک">
+                        </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="btn btn-icon btn-light btn-xs shadow-sm rounded-circle pe-none flex-shrink-0 me-3">
+                                <i class="fi-foursquare text-body"></i>
+                            </div>
+                            <input class="form-control" id="googlePlus" type="text" name="googleplus" placeholder="اکانت گوگل پلاس">
+                        </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="btn btn-icon btn-light btn-xs shadow-sm rounded-circle pe-none flex-shrink-0 me-3">
+                                <i class="fi-twitter text-body"></i>
+                            </div>
+                            <input class="form-control" id="Twetter" type="text" name="twetter" placeholder="اکانت توییتر">
+                        </div>
+                        <div class="collapse" id="showMoreSocials">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="btn btn-icon btn-light btn-xs shadow-sm rounded-circle pe-none flex-shrink-0 me-3">
+                                    <i class="fi-instagram text-body"></i>
+                                </div>
+                                <input class="form-control" id="Instagram" type="text" name="instagram" placeholder="اکانت اینستاگرام">
+                            </div>
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="btn btn-icon btn-light btn-xs shadow-sm rounded-circle pe-none flex-shrink-0 me-3">
+                                    <i class="fi-linkedin text-body"></i>
+                                </div>
+                                <input class="form-control" id="Linkedin" type="text" name="linkedin" placeholder="اکانت لینکدین">
+                            </div>
+                        </div><a class="collapse-label collapsed d-inline-block fs-sm text-decoration-none pt-2 mb-1" href="#showMoreSocials" data-bs-toggle="collapse" data-bs-label-collapsed="موارد بیشتر" data-bs-label-expanded="بستن" role="button" aria-expanded="false" aria-controls="showMoreSocials"><i class="fi-arrow-down me-2"></i></a>
+                    </div>
+                </div>
+            </section>
+            <!-- Description-->
+            <section class="card card-body border-0 shadow-sm p-4 mb-4" id="description">
+                <h2 class="h5 mb-4"><i class="fi-edit text-primary fs-5 mt-n1 me-2"></i>توضیحات</h2>
+                <label class="form-label" for="description">توضیحات <span class="text-danger">*</span></label>
+                <div class="row mb-4">
+                    <div class="col-md-9 mb-md-0 mb-3">
+                        <textarea class="form-control" id="descriptionB" rows="6" placeholder="توضیحات درباره هتل تجاری برلین"></textarea><span class="form-text">8000 کاراکتر باقی مانده است</span>
+                    </div>
+                    <div class="col-md-3">
+                        <input class="file-uploader bg-secondary" id="logo" type="file" accept="image/png, image/jpeg" data-label-idle="&lt;i class=&quot;d-inline-block fi-cloud-upload fs-2 text-muted mb-2&quot;&gt;&lt;/i&gt;&lt;br&gt;&lt;span&gt;آپلود لوگو&lt;/span&gt;" data-style-panel-layout="compact" data-image-preview-height="160" data-image-crop-aspect-ratio="1:1" data-image-resize-target-width="200" data-image-resize-target-height="200">
+                    </div>
+                </div>
+                <div class="mb-4" id="numberRoomDiv">
+                    <label class="form-label d-block fw-bold mb-2 pb-1">تعداد اتاق</label>
+                    <div class="btn-group btn-group-sm" id="numberRoom" role="group" aria-label="Choose number of rooms">
+                        <input class="btn-check" type="radio" id="rooms-5" name="5">
+                        <label class="btn btn-outline-secondary px-sm-3 px-2 fw-normal" for="rooms-5">5+</label>
+                        <input class="btn-check" type="radio" id="rooms-10" name="10">
+                        <label class="btn btn-outline-secondary px-sm-3 px-2 fw-normal" for="rooms-10">10+</label>
+                        <input class="btn-check" type="radio" id="rooms-20" name="20">
+                        <label class="btn btn-outline-secondary px-sm-3 px-2 fw-normal" for="rooms-20">20+</label>
+                        <input class="btn-check" type="radio" id="rooms-50" name="50">
+                        <label class="btn btn-outline-secondary px-sm-3 px-2 fw-normal" for="rooms-50">50+</label>
+                        <input class="btn-check" type="radio" id="rooms-100" name="100">
+                        <label class="btn btn-outline-secondary px-sm-3 px-2 fw-normal" for="rooms-100">100+</label>
+                        <input class="btn-check" type="radio" id="rooms-200" name="200">
+                        <label class="btn btn-outline-secondary px-sm-3 px-2 fw-normal" for="rooms-200">200+</label>
+                    </div>
+                </div>
+                <div class="mb-4" id="Score">
+                    <label class="form-label d-block fw-bold mb-2 pb-1">امتیاز هتل</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="5-star">
+                        <label for="5-star" hidden>5</label>
+                        <label class="form-check-label fs-sm align-middle mt-n2" for="5-star">
+                            <span class="star-rating"><i class="star-rating-icon fi-star-filled active"></i><i class="star-rating-icon fi-star-filled active"></i><i class="star-rating-icon fi-star-filled active"></i><i class="star-rating-icon fi-star-filled active"></i><i class="star-rating-icon fi-star-filled active"></i></span>
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="4-star">
+                        <label for="4-star" hidden>4</label>
+                        <label class="form-check-label fs-sm align-middle mt-n2" for="4-star">
+                            <span class="star-rating"><i class="star-rating-icon fi-star-filled active"></i><i class="star-rating-icon fi-star-filled active"></i><i class="star-rating-icon fi-star-filled active"></i><i class="star-rating-icon fi-star-filled active"></i><i class="star-rating-icon fi-star"></i></span>
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="3-star">
+                        <label for="3-star" hidden>3</label>
+                        <label class="form-check-label fs-sm align-middle mt-n2" for="3-star">
+                            <span class="star-rating"><i class="star-rating-icon fi-star-filled active"></i><i class="star-rating-icon fi-star-filled active"></i><i class="star-rating-icon fi-star-filled active"></i><i class="star-rating-icon fi-star"></i><i class="star-rating-icon fi-star"></i></span>
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="2-star">
+                        <label for="2-star" hidden>2</label>
+                        <label class="form-check-label fs-sm align-middle mt-n2" for="2-star">
+                            <span class="star-rating"><i class="star-rating-icon fi-star-filled active"></i><i class="star-rating-icon fi-star-filled active"></i><i class="star-rating-icon fi-star"></i><i class="star-rating-icon fi-star"></i><i class="star-rating-icon fi-star"></i></span>
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="1-star">
+                        <label for="1-star" hidden>1</label>
+                        <label class="form-check-label fs-sm align-middle mt-n2" for="1-star">
+                            <span class="star-rating"><i class="star-rating-icon fi-star-filled active"></i><i class="star-rating-icon fi-star"></i><i class="star-rating-icon fi-star"></i><i class="star-rating-icon fi-star"></i><i class="star-rating-icon fi-star"></i></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="row row-cols-md-3 row-cols-sm-2 row-cols-1 gy-md-4 gy-3 mb-4" id="HotelFeature">
+                    <div class="col" id="eghamatTime">
+                        <label class="form-label d-block fw-bold mb-2 pb-1">حداقل اقامت</label>
+                        <div class="form-check">
+                            <input class="form-check-input" id="ab-stay-3" type="radio" name="3 شب یا کمتر">
+                            <label class="form-check-label" for="ab-stay-3">3 شب یا کمتر</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" id="ab-stay-more" type="radio" name="بیشتر از 3 شب" checked>
+                            <label class="form-check-label" for="ab-stay-more">بیشتر از 3 شب</label>
+                        </div>
+                    </div>
+                    <div class="col" id="worker">
+                        <label class="form-label d-block fw-bold mb-2 pb-1">کارمند</label>
+                        <div class="form-check">
+                            <input class="form-check-input" id="ab-on-site-staff-y" type="radio" name="بله" checked>
+                            <label class="form-check-label" for="ab-on-site-staff-y">بله</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" id="ab-on-site-staff-n" type="radio" name="خیر">
+                            <label class="form-check-label" for="ab-on-site-staff-n">خیر</label>
+                        </div>
+                    </div>
+                    <div class="col" id="home">
+                        <label class="form-label d-block fw-bold mb-2 pb-1">خانه دار</label>
+                        <div class="form-check">
+                            <input class="form-check-input" id="ab-housekeeping-included" type="radio" name="ارزش افزوده">
+                            <label class="form-check-label" for="ab-housekeeping-included">ارزش افزوده</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" id="ab-housekeeping-additional" type="radio" name="هزینه مازاد" checked>
+                            <label class="form-check-label" for="ab-housekeeping-additional">هزینه مازاد</label>
+                        </div>
+                    </div>
+                    <div class="col" id="ejare">
+                        <label class="form-label d-block fw-bold mb-2 pb-1">اجاره خانه</label>
+                        <div class="form-check">
+                            <input class="form-check-input" id="ab-housekeeping-daily" type="radio" name="روزانه" checked>
+                            <label class="form-check-label" for="ab-housekeeping-daily">روزانه</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" id="ab-housekeeping-weekly" type="radio" name="هفتگی">
+                            <label class="form-check-label" for="ab-housekeeping-weekly">هفتگی</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" id="ab-housekeeping-none" type="radio" name="هیچ کدام">
+                            <label class="form-check-label" for="ab-housekeeping-none">هیچ کدام</label>
+                        </div>
+                    </div>
+                    <div class="col" id="tabelhotel">
+                        <label class="form-label d-block fw-bold mb-2 pb-1">میز پذیرایی</label>
+                        <div class="form-check">
+                            <input class="form-check-input" id="ab-front-desk-24" type="radio" name="کارمند 24 ساعته">
+                            <label class="form-check-label" for="ab-front-desk-24">کارمند 24 ساعته</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" id="ab-front-desk-limited" type="radio" name="کارمند نیمه وقت" checked>
+                            <label class="form-check-label" for="ab-front-desk-limited">کارمند نیمه وقت</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" id="ab-front-desk-none" type="radio" name="هیچ کدام">
+                            <label class="form-check-label" for="ab-front-desk-none">هیچ کدام</label>
+                        </div>
+                    </div>
+                    <div class="col" id="bathroom">
+                        <label class="form-label d-block fw-bold mb-2 pb-1">سرویس بهداشتی</label>
+                        <div class="form-check">
+                            <input class="form-check-input" id="ab-bathroom-all" type="radio" name="2">
+                            <label class="form-check-label" for="ab-bathroom-all"> 2</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" id="ab-bathroom-some" type="radio" name="3" checked>
+                            <label class="form-check-label" for="ab-bathroom-some">3</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" id="ab-bathroom-shared" type="radio" name="مشترک">
+                            <label class="form-check-label" for="ab-bathroom-shared">مشترک</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-4" id="emkanat">
+                    <label class="form-label d-block fw-bold mb-2 pb-1">امکانات رفاهی</label>
+                    <div class="row row-cols-md-3 row-cols-sm-2 row-cols-1" id="emakanatDiv">
+                        <div class="col">
+                            <div class="form-check">
+                                <input class="form-check-input" id="ab-amenity-wifi" type="checkbox">
+                                <label class="form-check-label" for="ab-amenity-wifi">وای فای</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-check">
+                                <input class="form-check-input" id="ab-amenity-pets" type="checkbox">
+                                <label class="form-check-label" for="ab-amenity-pets">نگهداری حیوانات خانگی</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-check">
+                                <input class="form-check-input" id="ab-amenity-dishwasher" type="checkbox">
+                                <label class="form-check-label" for="ab-amenity-dishwasher">ماشین ظرفشویی</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-check">
+                                <input class="form-check-input" id="ab-amenity-parking" type="checkbox" checked>
+                                <label class="form-check-label" for="ab-amenity-parking">پارکینگ</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-check">
+                                <input class="form-check-input" id="ab-amenity-restaurant" type="checkbox">
+                                <label class="form-check-label" for="ab-amenity-restaurant">رستوران</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-check">
+                                <input class="form-check-input" id="ab-amenity-iron" type="checkbox">
+                                <label class="form-check-label" for="ab-amenity-iron">گاز رومیزی</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-check">
+                                <input class="form-check-input" id="ab-amenity-swimming-pool" type="checkbox" checked>
+                                <label class="form-check-label" for="ab-amenity-swimming-pool">استخر</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-check">
+                                <input class="form-check-input" id="ab-amenity-bar" type="checkbox">
+                                <label class="form-check-label" for="ab-amenity-bar">هود</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-check">
+                                <input class="form-check-input" id="ab-amenity-hair-dryer" type="checkbox">
+                                <label class="form-check-label" for="ab-amenity-hair-dryer">سیستم گرمایشی</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-check">
+                                <input class="form-check-input" id="ab-amenity-spa-lounge" type="checkbox">
+                                <label class="form-check-label" for="ab-amenity-spa-lounge">سالن آبگرم</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-check">
+                                <input class="form-check-input" id="ab-amenity-tv" type="checkbox" checked>
+                                <label class="form-check-label" for="ab-amenity-tv">تلویزیون</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-check">
+                                <input class="form-check-input" id="ab-amenity-kitchen" type="checkbox">
+                                <label class="form-check-label" for="ab-amenity-kitchen">آشپزخانه</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-check">
+                                <input class="form-check-input" id="ab-amenity-gym" type="checkbox">
+                                <label class="form-check-label" for="ab-amenity-gym">باشگاه</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-check">
+                                <input class="form-check-input" id="ab-amenity-air-conditioning" type="checkbox">
+                                <label class="form-check-label" for="ab-amenity-air-conditioning">تهویه هوا</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-check">
+                                <input class="form-check-input" id="ab-amenity-breakfast" type="checkbox">
+                                <label class="form-check-label" for="ab-amenity-breakfast">صبحانه</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-check">
+                                <input class="form-check-input" id="ab-amenity-laundry-service" type="checkbox">
+                                <label class="form-check-label" for="ab-amenity-laundry-service">ماشین لباسشویی</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-check">
+                                <input class="form-check-input" id="ab-amenity-heating" type="checkbox" checked>
+                                <label class="form-check-label" for="ab-amenity-heating">سیستم سرمایشی</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-check">
+                                <input class="form-check-input" id="ab-amenity-security-cameras" type="checkbox">
+                                <label class="form-check-label" for="ab-amenity-security-cameras">دوربین مداربسته</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-4" id="typeRoom">
+                    <label class="form-label d-block fw-bold mb-2 pb-1">نوع اتاق</label>
+                    <div class="form-check">
+                        <input class="form-check-input" id="ab-room-non-smoking" type="checkbox">
+                        <label class="form-check-label" for="ab-room-non-smoking">بدون اتاق</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" id="ab-room-single" type="checkbox">
+                        <label class="form-check-label" for="ab-room-single">1 خواب</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" id="ab-room-double" type="checkbox">
+                        <label class="form-check-label" for="ab-room-double">2 خواب</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" id="ab-room-family" type="checkbox">
+                        <label class="form-check-label" for="ab-room-family">پذیرایی</label>
+                    </div>
+                </div>
+                
+                <br />
+                <div class="card-body" id="optionDiv">
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="result9" role="tabpanel">
+                            <div class="d-sm-flex">
+                                <div class="w-100 ms-4">
+                                    <div class="mb-3">
+                                        <label class="form-label" for="input-lg">نام ویژگی</label>
+                                        <input class="form-control form-control-lg" id="DisableName" type="text" placeholder="وای فای">
+                                    </div>
+                                </div>
+                                <div class="w-100">
+                                    <div class="mb-3">
+                                        <label class="form-label" for="input-lg">مقدار ویژگی</label>
+                                        <input class="form-control form-control-lg" id="ValName" type="text" placeholder="دارد">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="w-100 ms-4">
+                                <div class="mb-3">
+                                    <button id="AddFeatures" onclick="AddToTable()" class="btn btn-accent mb-3 me-2" type="button">افزودن</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <br />
+                    <table id="FeaturesTable" style="border: 1px; width: 400Px;height:100px;padding-right:100px ">
+                        <thead>
+                            <tr>
+                                <th> نام ویژگی</th>
+                                <th>
+                                    مقدار ویژگی
+                                </th>
+                                <th>
+                                    عمل
+                                </th>
+                            </tr>
+
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Price range-->
+            <section class="card card-body border-0 shadow-sm p-4 mb-4" id="price">
+                <h2 class="h5 mb-4"><i class="fi-cash text-primary fs-5 mt-n1 me-2"></i>محدوده قیمت</h2>
+                <label class="form-label" for="ab-price">قیمت (به ازای هر شب)<span class="text-danger">*</span></label>
+                <div class="col-md-8 d-flex flex-sm-row flex-column px-0">
+                    <div class="d-flex align-items-center ms-sm-2 mb-sm-0 mb-2">
+                        <input class="form-control" id="price-low" type="number" min="50" step="10" placeholder="حداقل" required>
+                        <div class="mx-2">—</div>
+                        <input class="form-control" id="price-Max" type="number" placeholder="حداکثر" min="60" step="10" required>
+                    </div>
+                    <select class="form-select w-sm-25 me-sm-0 me-auto">
+                        <option value="usd">تومان</option>
+                        <option value="eur">دلار</option>
+                        <option value="gbp">یورو</option>
+                        <option value="jpy">پوند</option>
+                    </select>
+                </div>
+            </section>
+
+
+            <!-- Photos / video-->
+            <section class="card card-body border-0 shadow-sm p-4 mb-4" id="photos">
+                <h2 class="h5 mb-4"><i class="fi-image text-primary fs-5 mt-n1 me-2"></i>تصاویر / ویدئو</h2>
+                <div class="alert alert-info mb-4" role="alert">
+                    <div class="d-flex">
+                        <i class="fi-alert-circle me-2 me-sm-3"></i>
+                        <p class="fs-sm mb-1">حداکثر حجم عکس 8 مگابایت است. فرمت ها: jpeg ، jpg ، png. ابتدا تصویر اصلی را قرار دهید.<br>حداکثر حجم فیلم 10 مگابایت است. فرمت ها: mp4 ، mov.</p>
+                    </div>
+                </div>
+                @*<input id="ImageBussiness" onchange="preview()" style="" class="file-uploader" type="file" multiple data-max-file-size="10MB" accept="image/png, image/jpeg, video/mp4, video/mov" data-label-idle="&lt;div class=&quot;btn btn-primary rounded-pill mb-3&quot;&gt;آپلود تصویر / ویدوئو &lt;i class=&quot;fi-cloud-upload me-1&quot;&gt;&lt;/i&gt;&lt;/div&gt;&lt;br&gt;یا فایل مورد را نظر به داخل کادر بکشید">*@
+                <input type="file" id="file-input" style="padding: 0; margin: 0; box-sizing: border-box; display: none;" onchange="preview()" multiple data-max-file-size="10MB" accept="image/png, image/jpeg, video/mp4, video/mov">
+                <label for="file-input" style=" display: block; position: relative; background-color: #025bee; color: #ffffff; font-size: 18px; text-align: center; width: 300px; padding: 18px 0; margin: auto; border-radius: 5px; cursor: pointer;">
+                    <i class="fas fa-upload"></i> &nbsp; آپلود تصویر / ویدوئو
+                </label>
+                <br />
+                <br />
+                <div class="row g-4 gallery" id="Images">
+                    <!-- Item -->
+                    <div class="col-xl-4 col-sm-6">
+                        <a class="gallery-item rounded-2" href="~/SiteFile/img/real-estate/single/03.jpg"
+                           data-sub-html="<h6 class=&quot;fs-sm text-light&quot;>عنوان عکس #1</h6>">
+                            <img src="~/SiteFile/img/real-estate/single/th03.jpg" alt="Gallery thumbnail">
+                            <span class="gallery-item-caption">عنوان عکس #1</span>
+                        </a>
+                    </div>
+                </div>
+
+            </section>
+            <p id="num-of-files">No Files Chosen</p>
+            <!-- Action buttons -->
+            <section class="d-sm-flex justify-content-between pt-2">
+                <a id="PreviewModal" class="btn btn-outline-primary btn-lg d-block rounded-pill ps-3 mb-3 mb-sm-2"
+                   onclick="showperviewModal()" data-bs-toggle="modal"><i class="fi-eye-on me-2"></i>پیش نمایش</a>
+                <button id="submitTheInformation" onclick="submitData()" class="btn btn-primary btn-lg d-block rounded-pill mb-2">ثبت اطلاعات</button>
+            </section>
+        </div>
+
+        <!-- Progress of completion-->
+        <aside class="col-lg-3 offset-lg-1 d-none d-lg-block">
+            <div class="sticky-top pt-5">
+                <h6 class="pt-5 mt-3 mb-2 font-vazir">33% محتوا تکمیل شده است</h6>
+                <div class="progress mb-4" style="height: .25rem;">
+                    <div class="progress-bar bg-danger" role="progressbar" style="width: 33%" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <ul class="list-unstyled">
+                    <li class="d-flex align-items-center"><i class="fi-check text-primary me-2"></i><a class="nav-link fw-normal ps-1 p-0" href="#basic-info" data-scroll data-scroll-offset="20">اطلاعات پایه</a></li>
+                    <li class="d-flex align-items-center"><i class="fi-check text-primary me-2"></i><a class="nav-link fw-normal ps-1 p-0" href="#location" data-scroll data-scroll-offset="20">موقعیت مکانی</a></li>
+                    <li class="d-flex align-items-center"><i class="fi-check text-muted me-2"></i><a class="nav-link fw-normal ps-1 p-0" href="#contacts" data-scroll data-scroll-offset="20">راه های ارتباطی</a></li>
+                    <li class="d-flex align-items-center"><i class="fi-check text-muted me-2"></i><a class="nav-link fw-normal ps-1 p-0" href="#description" data-scroll data-scroll-offset="20">توضیحات</a></li>
+                    <li class="d-flex align-items-center"><i class="fi-check text-muted me-2"></i><a class="nav-link fw-normal ps-1 p-0" href="#price" data-scroll data-scroll-offset="20">محدوده قیمت</a></li>
+                    <li class="d-flex align-items-center"><i class="fi-check text-muted me-2"></i><a class="nav-link fw-normal ps-1 p-0" href="#photos" data-scroll data-scroll-offset="20">تصاویر / ویدئو</a></li>
+                </ul>
+            </div>
+        </aside>
+
+    </div>
+</div>
+
+<script>
+    // Multiple images preview in browser
+    let fileInput = document.getElementById("file-input");
+    let imageContainerModal = document.getElementById("PictureModal");
+    let imageContainer = document.getElementById("Images");
+    let numOfFiles = document.getElementById("num-of-files");
+    let divclasses = ['col-xl-4', 'col-sm-6'];
+    let aTagclasses = ['gallery-item', 'rounded-2'];
+    let spanTagClasses = ['gallery-item-caption'];
+    function preview() {
+        imageContainer.innerHTML = "";
+        numOfFiles.textContent = `${fileInput.files.length} Files Selected`;
+        for (i of fileInput.files) {
+            let reader = new FileReader();
+            let div = document.createElement("div");
+            let aTag = document.createElement("a");
+            let spanTag = document.createElement("span");
+            div.classList.add(...divclasses);
+            aTag.classList.add(...aTagclasses);
+            spanTag.classList.add(...spanTagClasses);
+            spanTag.innerText = i.name;
+            aTag.appendChild(spanTag);
+            reader.onload = () => {
+                let img = document.createElement("img");
+                img.setAttribute("src", reader.result);
+                img.setAttribute("alt", "Gallery thumbnail");
+                aTag.insertBefore(img, spanTag);
+                aTag.setAttribute("href", reader.result);
+                aTag.setAttribute("data-sub-html", ' < h6 class=& quot; fs - sm text - light & quot;>' + i.name + '</h6 >');
+            }
+            div.appendChild(aTag);
+            imageContainer.appendChild(div);
+            reader.readAsDataURL(i);
+        }
+        previewInModal();
+    }
+    function previewInModal() {
+        let divclasses = ['col-8'];
+        let div1classes = ['col-4'];
+        let imgclasses = ["rounded", "rounded-md-3"];
+        imageContainerModal.innerHTML = "";
+        let reader = new FileReader();
+        let div2 = document.createElement("div");
+        for (i of fileInput.files) {
+            let reader = new FileReader();
+            let div = document.createElement("div");
+            let aTag = document.createElement("a");
+            let spanTag = document.createElement("span");
+            aTag.appendChild(spanTag);
+            //if (i == 0) {
+            //    console.log("i=0");
+            //    div.classList.add(...divclasses);
+            //    reader.onload = () => {
+            //        let img = document.createElement("img");
+            //        img.setAttribute("src", reader.result);
+            //        img.setAttribute("alt", "Gallery thumbnail");
+            //        img.classList.add(...imgclasses);
+            //        aTag.insertBefore(img, spanTag);
+            //        aTag.setAttribute("href", reader.result);
+            //        aTag.setAttribute("data-sub-html", ' < h6 class=& quot; fs - sm text - light & quot;>' + fileInput.files[i].name + '</h6 >');
+            //    }
+            //}
+            //else {
+            div.classList.add(...div1classes);
+            reader.onload = () => {
+                let img = document.createElement("img");
+                img.setAttribute("src", reader.result);
+                img.setAttribute("alt", "Gallery thumbnail");
+                img.classList.add(...imgclasses);
+                aTag.insertBefore(img, spanTag);
+                aTag.setAttribute("href", reader.result);
+                aTag.setAttribute("data-sub-html", ' < h6 class=& quot; fs - sm text - light & quot;>' + fileInput.files[i].name + '</h6 >');
+            }
+            //}
+            div.appendChild(aTag);
+            imageContainerModal.appendChild(div);
+            reader.readAsDataURL(i);
+        }
+        for (i in fileInput.files) {
+            //if (i==0) {
+            let div1 = document.createElement("div");
+
+            reader.onload = () => {
+                let img = document.createElement("img");
+                img.setAttribute("src", reader.result);
+                img.setAttribute("alt", i.name);
+            }
+            imageContainerModal.appendChild(div1);
+            //}
+            ////else {
+            //    reader.onload = () => {
+
+            //        let img = document.createElement("img");
+            //        img.setAttribute("src", reader.result);
+            //        img.setAttribute("alt", i.name);
+            //        img.classList.add("rounded", "rounded-md-3", "mb-2","mb-md-3");
+            //        div2.appendChild(img);
+            //    }
+            //    imageContainerModal.appendChild(div2);
+            ///*}*/
+
+            reader.readAsDataURL(i);
+        }
+    }
+    function showperviewModal() {
+        var low = $("#price-low").val();
+        var max = $("#price-Max").val();
+        var Name = $("#NameBussiness").val();
+        var des = $("#descriptionB").val();
+        var address = $("#address").val();
+        var StateCity = $('#State-city').find('option:selected').text();
+        var City = $('#City').find('option:selected').text();
+        var CompleteAddress = StateCity + " " + City + " " + address;
+        var Email = $("#EmailB").val();
+        var PhoneNumber = $("#PhoneNumber").val();
+        var siteB = $("#siteB").val();
+        var Instagram = $("#Instagram").val();
+        var FaceBookB = $("#FaceBookB").val();
+        var Twetter = $("#Twetter").val();
+        $("#BDecription").text(des);
+        $("#BName").text(Name);
+        $("#telPhone").text(PhoneNumber);
+        $("#emailModal").text(Email);
+        $("#emailModal").attr("href", Email);
+        $("#FacebookModal").attr("href", FaceBookB);
+        $("#InstagramModal").attr("href", Instagram);
+        $("#twitterModal").attr("href", Twetter);
+        $("#SiteModal").text(siteB);
+        $("#SiteModal").attr("href", siteB);
+        $("#BAddress").text(CompleteAddress);
+        $("#AddressB").text(CompleteAddress);
+        $("#NameB").text(Name);
+        $("#BPrice").text(`${low}-${max} /هر شب`);
+        $("#PriceB").text(`${low}-${max}`);
+        $("#emkanatModal").empty();
+        $("#typeUlModal").empty();
+        var selectedemkanat = [];
+        $('#emakanatDiv input:checked').each(function () {
+            var idEm = $(this).attr('id');
+            selectedemkanat.push($("#" + idEm).parent().text().trim());
+        });
+        $.each(selectedemkanat, function (i, val) {
+            $('<li class="col"><i class="fi-wifi mt-n1 me-2 fs-lg align-middle"></i>' + val + '</li>').appendTo('#emkanatModal');
+        });
+        var selectedtypeRoom = [];
+        $('#typeRoom input:checked').each(function () {
+            var idtype = $(this).attr('id');
+            selectedtypeRoom.push($("#" + idtype).parent().text().trim());
+        });
+        $.each(selectedtypeRoom, function (i, val) {
+            $(' <li class="col"><i class="fi-no-smoke mt-n1 me-2 fs-lg align-middle"></i>' + val + '</li>').appendTo('#typeUlModal');
+        });
+
+        var dataFeatures = $('#FeaturesTable tr:gt(0)').map(function () {
+            return {
+                DisplayName: $(this.cells[0]).text(),
+                Value: $(this.cells[1]).text()
+            };
+        }).get();
+        $.each(dataFeatures, function (i, val) {
+            $('<span style="color: #4453AF;font-size:20px;"><a>' + val.DisplayName + ':</a></span>').appendTo('#showFeature');
+            $('<span style="color: #7E8292;font-size:20px;" id="valueB" class="display-block overflow-hidden">' + val.Value + '</span>').appendTo('#showFeature');
+            $('<br/>').appendTo('#showFeature');
+        });
+        $('#preview-modal').modal('show');
+    }
+</script>
+<script>
+    function textinput() {
+        var address = $("#address").val();
+        var StateCity = $('#State-city').find('option:selected').text();
+        var City = $('#City').find('option:selected').text();
+        var CompleteAddress = StateCity + " " + City + " " + address;
+       
+        geocoding(CompleteAddress);
+    }
+
+</script>
+<script>
+    {
+        var lan = 35.699739;
+        var lon = 51.338097;
+        var address = "";
+
+        //init the map
+        var myMap = new L.Map('map', {
+            key: 'web.0672d81da5734d0f8f35ce7beb9637f2',
+            maptype: 'dreamy',
+            poi: true,
+            traffic: false,
+            center: [lan, lon],
+            zoom: 15,
+
+        });
+        var marker = L.marker([35.699739, 51.338097]).addTo(myMap);
+        myMap.on('click', function (data) {
+            ReverseGeocoding(data.latlng.lat, data.latlng.lng);
+            marker.setLatLng([data.latlng.lat, data.latlng.lng]);
+            marker.bindPopup(address).openPopup();
+            //set map center to address
+            myMap.flyTo([lat, lng], 15);
+
+        });
+
+        function ReverseGeocoding(lat, lng) {
+
+            var url = `https://api.neshan.org/v5/reverse?lat=${lat}&lng=${lng}`;
+            var params = {
+                headers: {
+                    'Api-Key': 'service.92d0b5a1cd814d78adfce4df575293e8'
+                },
+
+            };
+            $.ajax({
+                url: url,
+                headers: params.headers,
+                datatype: "json",
+                type: "GET",
+                success: function (data) {
+
+                    address = data['formatted_address'];
+                    document.getElementById("address").value = data['formatted_address'];
+
+                }
+            });
+
+        }
+
+        //sending request to Geocoding API
+        function geocoding(adres) {
+
+            //getting adrress value from input tag
+            var addresswrite = adres;
+
+            //making url
+            var url = `https://api.neshan.org/v4/geocoding?address=${addresswrite}`;
+
+            //add your api key
+            var params = {
+                headers: {
+                    'Api-Key': 'service.92d0b5a1cd814d78adfce4df575293e8'
+                },
+
+            };
+
+
+            $.ajax({
+                url: url,
+                headers: params.headers,
+                datatype: "json",
+                type: "GET",
+                success: function (data) {
+
+                    marker.setLatLng([data['location']['y'], data['location']['x']]);
+                    marker.bindPopup(addresswrite).openPopup();
+                    //set map center to address
+                    myMap.flyTo([data['location']['y'], data['location']['x']], 15);
+                    getLntlng(data['location']['y'], data['location']['x']);
+                }
+            });
+
+
+        }
+    }
+
+</script>
+<script>
+    function subChange(id) {
+        var select = document.getElementById("subcategory");
+        removeOptions(select);
+        $.ajax({
+            url: "/bussiness/subChange",
+            data: { "parentId": id },
+            success: function (data) {
+
+                for (var i = 0; i < data.length; i++) {
+
+                    var opt = document.createElement('option');
+                    opt.value = JSON.stringify(data[i].id);
+                    opt.innerHTML = JSON.stringify(data[i].name).toString().replace(/['"]+/g, '');
+                    select.appendChild(opt);
+                }
+            }
+        });
+
+    }
+    function removeOptions(selectElement) {
+        var i, L = selectElement.options.length;
+        for (i = L; i >= 0; i--) {
+            selectElement.remove(i);
+        }
+    }
+</script>
+<script src="~/SiteFile/city.js"></script>
+<script>
+    function AddToTable() {
+        var txtDisable = $("#DisableName").val();
+        var txtVal = $("#ValName").val();
+
+        if (txtDisable == '' || txtVal == '') {
+            Swal.fire('هشدار!', 'نام و مقدار را باید وارد کنید', 'warning');
+        }
+        else {
+            $('#FeaturesTable tbody').append('<tr> <td>' + txtDisable + '</td>  <td>' + txtVal + '</td> <td> <button id="idFeatures" onclick="deleteRow(this)" class="btn btn-danger mb-3 me-2"> حذف </button> </td> </tr>');
+            $("#DisableName").val("");
+            $("#ValName").val("");
+        }
+    };
+    function upTo(el, tagName) {
+        tagName = tagName.toLowerCase();
+
+        while (el && el.parentNode) {
+            el = el.parentNode;
+            if (el.tagName && el.tagName.toLowerCase() == tagName) {
+                return el;
+            }
+        }
+        return null;
+    }
+
+    function deleteRow(el) {
+        var row = upTo(el, 'tr')
+        if (row) row.parentNode.removeChild(row);
+    }
+</script>
+<script>
+    function selectCate() {
+        var subCate = $("#subcategory").find("option:selected").text();
+       
+        if (subCate == "هتل") {
+            
+            $("#Score").show();
+            $("#Score").show();
+            $("#HotelFeature").show();
+            $("#javayezmodal").show();
+            $("#roomtypeModal").show();
+            $("#eghamat").show();
+            $("#emkanat").show();
+            $("#typeRoom").show();
+            $("#numberRoomDiv").show();
+            $("#optionDiv").hide();
+            $("#featureB").hide();
+        }
+        else {
+            
+            $("#Score").hide();
+            $("#emtiyaz").hide();
+            $("#HotelFeature").hide();
+            $("#roomtypeModal").hide();
+            $("#numberRoomDiv").hide();
+            $("#eghamat").hide();
+            $("#emkanat").hide();
+            $("#typeRoom").hide();
+            $("#javayez").hide();
+            $("#optionDiv").show();
+            $("#featureB").show();
+        }
+    };
+</script>
+
+<script>
+
+    var cateId = 0;
+    var lat1 = 0;
+    var lng1 = 0;
+    function getCategotyId(data) {
+        cateId = data;
+    }
+    function getLntlng(lat, lng) {
+       
+        lat1 = lat;
+        lng1 = lng;
+    }
+    function submitData() {
+        
+        var data = new FormData();
+        data.append("Name", $("#NameBussiness").val());
+        data.append("Description", $("#descriptionB").val());
+        data.append("lowPrice", $("#price-low").val());
+        data.append("maxPrice", $("#price-Max").val());
+        data.append("websiteUrl", $("#siteB").val());
+        data.append("Email", $("#EmailB").val());
+        data.append("phoneNumber", $("#PhoneNumber").val());
+        data.append("CategoryId", cateId);
+        data.append("SubCategoryId", $("#subcategory").find("option:selected").val());
+        data.append("countery", $("#ab-country").find("option:selected").text());
+        data.append("city", $("#State-city").find("option:selected").text());
+        data.append("Address", $("#address").val());
+        data.append("Mantaghe", $("#City").find("option:selected").text());
+        data.append("codeposti", $("#postalCode").val());
+        data.append("LanLng", lat1.toString() + "//" + lng1.toString());
+        var HotelFeature = [];
+        $('#eghamatTime :radio:checked').each(function () {
+            var idtype = $(this).attr('id');
+            HotelFeature.push($("#" + idtype).attr("name") + "//" + "حداقل اقامت");
+        });
+        $('#home :radio:checked').each(function () {
+            var idtype = $(this).attr('id');
+            HotelFeature.push($("#" + idtype).attr("name") + "//" + "خانه دار");
+        });
+        $('#ejare :radio:checked').each(function () {
+            var idtype = $(this).attr('id');
+            HotelFeature.push($("#" + idtype).attr("name") + "//" + "اجاره خانه");
+        });
+        $('#tabelhotel :radio:checked').each(function () {
+            var idtype = $(this).attr('id');
+            HotelFeature.push($("#" + idtype).attr("name") + "//" + "میز پذیرایی");
+        });
+        $('#bathroom :radio:checked').each(function () {
+            var idtype = $(this).attr('id');
+            HotelFeature.push($("#" + idtype).attr("name") + "//" + "سرویس بهداشتی");
+        });
+        $.each(HotelFeature, function (i, val) {
+            data.append('[' + i + '].featurestring', val);
+        });
+        var socialMedia = [];
+        socialMedia.push($("#FaceBookB").val());
+        socialMedia.push($("#googlePlus").val());
+        socialMedia.push($("#Twetter").val());
+        socialMedia.push($("#Instagram").val());
+        socialMedia.push($("#Linkedin").val());
+        $.each(socialMedia, function (i, val) {
+            data.append('[' + i + '].SocialMediaSrc', val);
+        });
+        var selectedemkanat = [];
+        $('#emakanatDiv input:checked').each(function () {
+            var idEm = $(this).attr('id');
+            selectedemkanat.push($("#" + idEm).parent().text().trim());
+        });
+        $.each(selectedemkanat, function (i, val) {
+            data.append('[' + i + '].PossibilityValue', val);
+        });
+        var selectedtypeRoom = [];
+        $('#typeRoom input:checked').each(function () {
+            var idtype = $(this).attr('id');
+            selectedtypeRoom.push($("#" + idtype).parent().text().trim());
+        });
+        $.each(selectedtypeRoom, function (i, val) {
+            data.append('[' + i + '].Typevalue', val);
+        });
+        var selectedSocialMedia = [];
+        $('#SocialMedia input').each(function () {
+            if (this.value != "") {
+                var idtype = $(this).attr('id');
+                selectedtypeRoom.push($("#" + idtype)(function () {
+                    return {
+                        SocialMediaName: $(this.cells).text(),
+                        SocialMediaSrc: $(this.cells).attr("name")
+                    };
+                }).get());
+            }
+        });
+        $.each(selectedSocialMedia, function (i, val) {
+            data.append('[' + i + '].SocialMediaName', val);
+            data.append('[' + i + '].SocialMediaSrc', val);
+
+        });
+        
+        var selectedemtiyaz = [];
+        $('#Score input:checked').each(function () {
+            if (this.value != "") {
+                var idtype = $(this).attr('id');
+                selectedemtiyaz.push($("#" + idtype).parent().text().trim());
+            }
+        });
+        $.each(selectedemtiyaz, function (i, val) {
+            data.append("Score", val);
+        });
+        var roomNum;
+        $('#numberRoom input:Checked').each(function () {
+            if (this.value != "") {
+                var idtype = $(this).attr('id');
+                console.log($("#" + idtype).attr("name"));
+                roomNum = $("#" + idtype).attr("name");
+            }
+        });
+
+        data.append("numberRoom", roomNum);
+
+        var dataFeatures = $('#FeaturesTable tr:gt(0)').map(function () {
+            return {
+                DisplayName: $(this.cells[0]).text(),
+                Value: $(this.cells[1]).text()
+            };
+        }).get();
+        $.each(dataFeatures, function (i, val) {
+            data.append('[' + i + '].DisplayName', val);
+            data.append('[' + i + '].Value', val);
+        });
+
+        if (fileInput.files.length > 0) {
+            for (var i = 0; i < fileInput.files.length; i++) {
+                data.append('Images-' + i, fileInput.files[i]);
+            }
+        }
+        //console.log(data);
+        $.ajax({
+            url: "/Bussiness/AddBussiness",
+            method: "POST",
+            processData: false,
+            contentType: false,
+            data: data,
+            success: function () {
+
+            }
+        });
+
+
+    }
+</script>
+
+@section script{
+    <script src="/SiteFile/vendor/leaflet/dist/leaflet.js"></script>
+    <script src="/SiteFile/vendor/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.min.js"></script>
+    <script src="/SiteFile/vendor/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.min.js"></script>
+    <script src="/SiteFile/vendor/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.js"></script>
+    <script src="/SiteFile/vendor/filepond-plugin-image-crop/dist/filepond-plugin-image-crop.min.js"></script>
+    <script src="/SiteFile/vendor/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.min.js"></script>
+    <script src="/SiteFile/vendor/filepond-plugin-image-transform/dist/filepond-plugin-image-transform.min.js"></script>
+    <script src="/SiteFile/vendor/filepond/dist/filepond.min.js"></script>
+    <script src="/SiteFile/vendor/cleave.js/dist/cleave.min.js"></script>
+    <script src="/SiteFile/vendor/prismjs/components/prism-core.min.js"></script>
+    <script src="/SiteFile/vendor/prismjs/components/prism-markup.min.js"></script>
+    <script src="/SiteFile/vendor/prismjs/components/prism-clike.min.js"></script>
+    <script src="/SiteFile/vendor/prismjs/components/prism-javascript.min.js"></script>
+    <script src="/SiteFile/vendor/prismjs/components/prism-pug.min.js"></script>
+    <script src="/SiteFile/vendor/prismjs/plugins/toolbar/prism-toolbar.min.js"></script>
+    <script src="/SiteFile/vendor/prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+    <script src="/SiteFile/vendor/prismjs/plugins/line-numbers/prism-line-numbers.min.js"></script>
+    <script src="/SiteFile/vendor/lightgallery.js/dist/js/lightgallery.min.js"></script>
+    <script src="/SiteFile/vendor/lg-fullscreen.js/dist/lg-fullscreen.min.js"></script>
+    <script src="/SiteFile/vendor/lg-zoom.js/dist/lg-zoom.min.js"></script>
+    <script src="/SiteFile/vendor/lg-video.js/dist/lg-video.min.js"></script>
+    <script src="/SiteFile/vendor/lg-thumbnail.js/dist/lg-thumbnail.min.js"></script>
+}

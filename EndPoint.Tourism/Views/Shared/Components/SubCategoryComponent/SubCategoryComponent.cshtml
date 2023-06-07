@@ -1,0 +1,29 @@
+﻿@*@{
+    Layout = null;
+}
+@model subCategoryViewModel
+<div class="col-md-6">
+    <label class="form-label" for="ab-subcategory">زیر دسته <span class="text-danger">*</span></label>
+
+    <select class="form-select" onselect="ChangeSub()"  asp-items="@Model.subCate" id="subcategory" required>
+    </select>
+</div>
+
+<script>
+
+
+    function ChangeSub() {
+        alert('da');
+        var sub = $('#Category').find('option:selected').val();
+        $.ajax({
+            url: "~/Bussiness/",
+            data: { "id": sub },
+            success: function () {
+                alert("Done");
+            }
+        });
+      
+    };
+    
+
+</script>*@

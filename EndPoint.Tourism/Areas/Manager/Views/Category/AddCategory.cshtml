@@ -1,0 +1,73 @@
+﻿@section Sheets{
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.4.24/sweetalert2.min.css" integrity="sha512-Yn5Z4XxNnXXE8Y+h/H1fwG/2qax2MxG9GeUOWL6CYDCSp4rTFwUpOZ1PS6JOuZaPBawASndfrlWYx8RGKgILhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+}
+<div class="row">
+    <div class="col s12 m12 l12">
+        <div id="button-trigger" class="card card card-default scrollspy">
+            <div class="card-content">
+                <h2 class="card-title">اضافه کردن دسته بندی جدید برای محصولات</h2>
+                <br />
+                <form id="form1" action="AddCategory"  method="post"  class="formValidate0">
+                    <div class="app-search">
+                        <input type="hidden" name="Parentid" value="@ViewBag.parentid" />
+
+                        <input type="text" name="Name" placeholder="نام دسته بندی" class="app-filter iransans" id="">
+
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <input type="button" class="waves-effect waves-light btn mb-1 mr-1 btn-large btn-block" id="btnsear" value="اضافه کردن به لیست">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section script{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.4.24/sweetalert2.min.js" integrity="sha512-dnyteqeKASHjUgi20CTeO5cfd1JwMTNV2ZS+tx5rlPCdWgnd6UKYNLM2EarSU9E6J3lMtMhUkcA6g8f3cAjoQQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- BEGIN PAGE VENDOR JS-->
+    <script src="~/AdminFile/app-assets/vendors/data-tables/js/jquery.dataTables.min.js"></script>
+    <script src="~/AdminFile/app-assets/vendors/data-tables/extensions/responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/AdminFile/app-assets/vendors/data-tables/js/dataTables.select.min.js"></script>
+    <!-- END PAGE VENDOR JS-->
+    <!-- BEGIN PAGE LEVEL JS-->
+    <script src="~/AdminFile/app-assets/js/scripts/data-tables.min.js"></script>
+    <!-- END PAGE LEVEL JS-->
+    <!-- BEGIN PAGE LEVEL JS-->
+    <script src="~/AdminFile/app-assets/js/scripts/ui-chips.min.js"></script>
+    <script src="~/AdminFile/app-assets/js/scripts/advance-ui-modals.min.js"></script>
+    <script src="~/AdminFile/app-assets/js/scripts/ui-alerts.min.js"></script>
+    <script src="~/AdminFile/app-assets/vendors/sweetalert/sweetalert.min.js"></script>
+    <script>
+        $("#btnsear").click(function () {
+           
+            Swal.fire({
+                title: 'دسته بندی جدید',
+                text: 'آیا میخواهید دسته بندی جدید به لیست دسته بندی اضافه شود؟',
+                icon: 'info',
+
+
+                showCancelButton: true,
+                focusConfirm: false,
+                confirmButtonColor: '#3085d6',
+                CancelButtonColor: '#d33',
+                confirmButtonText:
+                    'بله اضافه شود',
+                cancelButtonText:
+                    'خیر'
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    $("#form1").submit();
+                }
+            });
+        });
+
+
+    </script>
+
+}

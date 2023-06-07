@@ -1,0 +1,69 @@
+﻿@model GetUserBussinessDto
+@{
+    ViewData["Title"] = "GetUserBussiness";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<!-- Page content-->
+<!-- Page container-->
+<div class="container mt-5 mb-md-4 py-5">
+    <!-- Breadcrumbs-->
+    <nav class="mb-3 pt-md-3" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/Home/indexs">خانه</a></li>
+            <li class="breadcrumb-item active" aria-current="page">لیست آگهی های من</li>
+        </ol>
+    </nav>
+    <!-- Page title + Sorting-->
+    <div class="d-flex flex-sm-row flex-column align-items-sm-center align-items-stretch justify-content-between pb-4 mb-2 mb-md-3">
+        <h1 class="h4 mb-sm-0 font-vazir">لیست آگهی های من</h1>
+    </div>
+    <div class="card p-sm-4 border-0 shadow-sm">
+        <div class="card-body">
+            <div class="row">
+                <!-- Sidebar-->
+                <aside class="col-lg-3 col-md-4 mb-lg-0 mb-4 pb-2 pe-xl-5">
+                    <ul class="nav flex-column mb-4 pb-lg-3">
+                        @foreach (var item in Model.CategoryCounts)
+                        {
+
+                            <li class="nav-item"><a class="nav-link py-1 px-0 fs-sm fw-normal" href="#"><i class="fi-bed mt-n1 ms-2 fs-base align-middle opacity-70"></i> @item.CategoryName<span class="float-end text-muted">(@item.CountCategory)</span></a></li>
+                        }
+                    </ul><a class="btn btn-primary rounded-pill" href="city-guide-add-business.html"><i class="fi-plus ms-2"></i> ثبت کسب و کار</a>
+                </aside>
+                <!-- Grid-->
+                <div class="col-lg-9 col-md-8">
+                    <div class="row row-cols-md-2 row-cols-lg-3 row-cols-sm-2 row-cols-1 g-3 g-xl-4">
+                        @foreach (var item in Model.ProdoctbriefDtos)
+                        {
+
+                            <!-- Item-->
+                            <div class="col pb-2">
+                                <div class="position-relative">
+                                    <div class="position-relative mb-3">
+                                        <div class="dropdown position-absolute zindex-5 top-0 end-0 mt-3 me-3">
+                                            <button class="btn btn-icon btn-light btn-xs rounded-circle shadow-sm" type="button" id="contextMenu1" data-bs-toggle="dropdown" aria-expanded="false"><i class="fi-dots-vertical"></i></button>
+                                            <ul class="dropdown-menu my-1" aria-labelledby="contextMenu1">
+                                                <li>
+                                                    <button class="dropdown-item" type="button"><i class="fi-trash opacity-60 me-2"></i>حذف</button>
+                                                </li>
+                                            </ul>
+                                        </div><img class="rounded-3" src="~/Images/Product/@item.Src" alt="Image">
+                                    </div>
+                                    <h3 class="mb-2 fs-lg"><a class="nav-link stretched-link" href="city-guide-single.html">@item.Name</a></h3>
+                                    <ul class="list-inline mb-0 fs-xs">
+                                        <li class="list-inline-item pe-1"><i class="fi-star-filled mt-n1 ms-1 fs-base text-warning align-middle"></i><b>@item.Score</b><span class="text-muted"></span></li>
+                                        <li class="list-inline-item pe-1"><i class="fi-credit-card mt-n1 ms-1 fs-base text-muted align-middle"></i>@item.LowPrice ت</li>
+                                        <li class="list-inline-item pe-1"><i class="fi-map-pin mt-n1 ms-1 fs-base text-muted align-middle"></i>@item.City</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

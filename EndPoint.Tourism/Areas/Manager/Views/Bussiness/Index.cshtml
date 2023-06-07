@@ -1,0 +1,123 @@
+﻿
+@{
+
+    Layout = "~/Areas/Manager/Views/Shared/_LayoutManagement.cshtml";
+}
+@model GetAllBussinessManagerAndAdminViewModel
+<div class="row">
+    <div class="col s12 m12 l12">
+        <div id="button-trigger" class="card card card-default scrollspy">
+            <div class="card-content">
+                <h4 class="card-title">لیست محصول ها</h4>
+                <div class="row">
+                    <form action="Index" method="get">
+                        <div class="app-search">
+                            <i class="material-icons mr-2 search-icon">search</i>
+                            <input type="text" name="searchKey" placeholder="جستجو" class="app-filter iransans" id="">
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <input type="submit" class="waves-effect waves-light btn mb-1 mr-1 " id="btnsear" value="جست وجو">
+                            </div>
+                        </div>
+                    </form>
+                    <br />
+                    <br />
+                    <div class="col s2 m6 l6 left">
+                        <a class="btn dropdown-settings waves-effect waves-light breadcrumbs-btn right" href="#!" data-target="dropdown1"><i class="material-icons hide-on-med-and-up">Category</i><span class="hide-on-small-onl">دسته بندی</span><i class="material-icons right">arrow_drop_down</i></a><ul class="dropdown-content" id="dropdown1" tabindex="0" style="display: block; width: 155.8px; left: 0.550003px; top: 167.55px; height: 201px; transform-origin: 100% 0px 0px; opacity: 1; transform: scaleX(1) scaleY(1);">
+                            @foreach (var item in Model.Category)
+                            {
+                                <li tabindex="0"><a class="grey-text text-darken-2" href="~/Manager/Bussiness/Index?categoryid=@item.id">@item.CategoryName</a></li>
+                            }
+                        </ul>
+
+                    </div>
+                    <br />
+                    <br />
+                    <div class="col s12">
+                        <table id="data-table-simple" class="display">
+                            <thead>
+                                <tr>
+                                    <th>اسم</th>
+                                    <th>دسته بندی</th>
+                                    <th>استان</th>
+                                    <th>کمترین قیمت</th>
+                                    <th>امتیاز</th>
+                                    <th>عمل</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    if (Model.ProdoctBriefVM.Count()>0)
+                                    {
+
+
+                                        foreach (var i in Model.ProdoctBriefVM)
+                                        {
+                                            <tr>
+                                                <td>@i.Name</td>
+                                                <td>@i.CategoryName </td>
+                                                <td>@i.City </td>
+                                                <td>@i.LowPrice</td>
+                                                <td>@i.Score</td>
+
+                                                <td>
+                                                    <br />
+                                                    <a href="~/Manager/Bussiness/UpdateBussiness/@i.BussinessId" class="waves-effect waves-light btn mb-1 mr-1 left">ویرایش</a>
+                                                    <a href="~/Manager/Bussiness/DeleteBussiness?id=@i.BussinessId" class="waves-effect waves-light btn mb-1 mr-1 left">حذف</a>
+                                                    <a href="~/Manager/Bussiness/DetailBussiness?id=@i.BussinessId" class="btn btn-info purple">اطلاعات بیشتر</a>
+
+                                                </td>
+
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                           <td>
+                                               <h3>هیچ کسب و کاری پیدا نشد</h3>
+                                           </td>  
+                                        </tr>   
+                                    }
+                                }
+                            <tfoot>
+                                <tr>
+                                    <th>اسم</th>
+                                    <th>دسته بندی</th>
+                                    <th>استان</th>
+                                    <th>کمترین قیمت</th>
+                                    <th>امتیاز</th>
+                                    <th>عمل</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        <nav class="border-top pb-md-4 pt-4" aria-label="Pagination">
+                            <paging total-records="@Model.totalRow"
+                                    page-no="1"
+                                    page-size="15"
+                                    show-prev-next="true"
+                                    show-total-pages="false"
+                                    show-total-records="false"
+                                    show-page-size-nav="true"
+                                    show-first-numbered-page="true"
+                                    show-last-numbered-page="true"
+                                    query-string-key-page-no="Page"
+                                    query-string-key-page-size="PageSize"
+                                    query-string-value="@@(Request.QueryString.Value)"
+                                    gap-size="2">
+                            </paging>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal Structure -->
+
+    </div>
+
+
+</div>
+

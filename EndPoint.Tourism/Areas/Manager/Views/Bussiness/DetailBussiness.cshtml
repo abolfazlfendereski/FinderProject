@@ -1,0 +1,191 @@
+﻿
+@{
+    ViewData["Title"] = "DetailBussiness";
+    Layout = "~/Areas/Manager/Views/Shared/_LayoutManagement.cshtml";
+    var fullAddress = Model.Address.city +" "+ Model.Address.Mantaghe + " " + Model.Address.Address;
+}
+@model FinderProject.Domian.Dto.DetailBussinessDto
+
+@section Sheets{
+
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css-rtl/pages/page-knowledge.min.css">
+    <link rel="stylesheet" type="text/css" href="~/app-assets/css/pages/advance-ui-media.min.css">
+   
+}
+<div class="col s12 card-content-link">
+    <div class="card z-depth-0 card-border-gray pb-3">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s12">
+                    <h5><i class="material-icons purple-text vertical-text-bottom"> grade </i>اطلاعات بیشتر در مورد محصول </h5>
+                    <br />
+                    <br />
+                </div>
+                <div class="col s12 m6">
+                    <span class="primary text-bold-500"><a><i class="ft-home font-small-3"></i>  کسب و کار</a></span>
+                    <span class="line-height-2 display-block overflow-hidden">@Model.Product.Name</span>
+                    <br />
+                    <span class="primary text-bold-500"><a><i class="ft-briefcase font-small-3"></i> امتیاز</a></span>
+                    <span class="line-height-2 display-block overflow-hidden"> @Model.Product.Score</span>
+                    <br />
+                    <span class="primary text-bold-500"><a><i class="ft-briefcase font-small-3"></i> وب سایت</a></span>
+                    <span class="line-height-2 display-block overflow-hidden"> @Model.Product.websiteUrl</span>
+                    <br />
+                   
+                    <span class="primary text-bold-500"><a><i class="ft-home font-small-3"></i>کمترین قیمت</a></span>
+                    <span class="line-height-2 display-block overflow-hidden"> @Model.Product.lowPrice.ToString("n0")</span>
+                    <br />
+                    <span class="primary text-bold-500"><a><i class="ft-home font-small-3"></i>بالاترین قیمت</a></span>
+                    <span class="line-height-2 display-block overflow-hidden"> @Model.Product.maxPrice.ToString("n0")</span>
+                    <br />
+                   
+                </div>
+                <div class="col s12 m6">
+                    <span class="primary text-bold-500"><a><i class="ft-home font-small-3"></i>تعداد اتاق</a></span>
+                    <span class="line-height-2 display-block overflow-hidden">@Model.Product.numberRoom</span>
+                    <br />
+                    <span class="primary text-bold-500"><a><i class="ft-home font-small-3"></i>توضیحات</a></span>
+                    <span class="line-height-2 display-block overflow-hidden">@Model.Product.Description</span>
+                    <br />
+                    <span class="primary text-bold-500"><a><i class="ft-home font-small-3"></i>ادرس</a></span>
+                    <span class="line-height-2 display-block overflow-hidden">@fullAddress</span>
+                    <br />
+                    <span class="primary text-bold-500"><a><i class="ft-home font-small-3"></i> دسته بندی</a></span>
+                    <span class="line-height-2 display-block overflow-hidden">@Model.categoryName</span>
+                    <br />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12">
+        <div id="captions" class="card card-tabs">
+            <div class="card-content">
+                <div class="card-title">
+                    <div class="row">
+                        <div class="col s12 m6 l10">
+                            <h4 class="card-title"> ویژگی های محصول</h4>
+                        </div>
+
+                    </div>
+                    <div id="view-captions" class="active">
+                        <div class="row">
+                            <div class="col s12 m6 display-flex justify-content-between">
+                                @if (Model.feactures.Count() < 0)
+                                {
+                                    @foreach (var item in Model.feactures)
+                                    {
+                                        <span class="text-bold-500 primary"><a> @item.DisplayName :</a></span>
+                                        <span class="display-block overflow-hidden"> @item.Value</span>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <br>
+                                    }
+                                }
+                                else
+                                {
+                                    @foreach (var item in Model.hotelFeactures)
+                                    {
+                                        <span class="text-bold-500 primary"><a> @item.DisPlayNameF :</a></span>
+                                        <span class="display-block overflow-hidden"> @item.valueF</span>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <br>
+                                    }
+                                }
+                            </div>
+                            @if (Model.feactures.Count() > 0)
+                            {
+                                <div class="col s12 m6 display-flex justify-content-between">
+
+                                    @foreach (var item in Model.socialMedias)
+                                    {
+                                        <span class="text-bold-500 primary"><a> @item.SocialMediaName </a></span>
+                                        <span class="display-block overflow-hidden"> @item.SocialMediaSrc</span>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <br>
+                                    }
+                                </div>
+                                <div class="col s12 m6 display-flex justify-content-between">
+
+                                    @foreach (var item in Model.possibilities)
+                                    {
+                                        <span class="text-bold-500 primary"><a> @item.PossibilityValue </a></span>
+
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <br>
+                                    }
+                                </div>
+                                <div class="col s12 m6 display-flex justify-content-between">
+
+                                    @foreach (var item in Model.rooms)
+                                    {
+                                        <span class="text-bold-500 primary"><a> @item.Typevalue </a></span>
+
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <br>
+                                    }
+                                </div>
+                            }
+
+                           
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12">
+        <div id="captions" class="card card-tabs">
+            <div class="card-content">
+                <div class="card-title">
+                    <div class="row">
+                        <div class="col s12 m6 l10">
+                            <h4 class="card-title">تصاویر  محصول</h4>
+                        </div>
+
+                    </div>
+                    <div id="view-captions" class="active">
+                        <div class="row">                            
+                        
+                            @foreach (var item in Model.Images)
+                            {
+                                <div class="col s12 mt-2">
+
+                                    <div class="material-placeholder" style=""><img class="materialboxed" src="~/images/product/@item" alt="sample" data-caption="" width="250"></div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section script{
+    <script src="~/app-assets/js/scripts/advance-ui-modals.min.js"></script>
+    <script src="~/app-assets/js/scripts/eCommerce-products-page.min.js"></script>
+    <script src="~/app-assets/vendors/noUiSlider/nouislider.min.js"></script>
+    <script src="~/app-assets/js/scripts/advance-ui-media.min.js"></script>
+}
+
+

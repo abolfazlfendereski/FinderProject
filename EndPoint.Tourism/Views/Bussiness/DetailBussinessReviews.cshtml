@@ -1,0 +1,242 @@
+﻿
+@{
+    ViewData["Title"] = "DetailBussinessReviews";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var FullAddress= Model.Address.city + " " + Model.Address.Mantaghe + " "+Model.Address.Address;
+}
+@model CommentDetailDto
+
+@section Sheet{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://static.neshan.org/sdk/leaflet/1.4.0/leaflet.css" rel="stylesheet" type="text/css">
+    <script src="https://static.neshan.org/sdk/leaflet/1.4.0/leaflet.js" type="text/javascript"></script>
+}
+<!-- Page content-->
+<!-- Review modal-->
+<div class="modal fade" id="modal-review" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header d-block position-relative border-0 pb-0 px-sm-5 px-4">
+                <h4 class="modal-title mt-4 text-center">ثبت نظر</h4>
+                <button class="btn-close position-absolute top-0 end-0 mt-3 me-3" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body px-sm-5 px-4">
+                <form class="needs-validation" asp-action="AddComment" asp-controller="Bussiness" asp-route-id="@Model.ProductDto.id" method="post">
+                    <div class="mb-3">
+                        <label class="form-label" for="review-name">نام و نام خانوادگی <span class='text-danger'>*</span></label>
+                        <input class="form-control" asp-for="@Model.AddCommentProductDto.Name" type="text" id="review-name" value="@Model.PersonalInformationDto.FullName" required>
+                        <div class="invalid-feedback">لطفا نام خود را وارد کنید.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="review-email">پست الکترونیکی <span class='text-danger'>*</span></label>
+                        <input class="form-control" asp-for="@Model.AddCommentProductDto.Email" type="email" id="review-email" value="@Model.PersonalInformationDto.Email" required>
+                        <div class="invalid-feedback">لطفا یک ایمیل معتبر وارد کنید</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="review-rating">امتیاز <span class='text-danger'>*</span></label>
+                        <select class="form-select" asp-for="@Model.AddCommentProductDto.Score" id="review-rating" required>
+                            <option value="" selected disabled>انتخاب امتیاز</option>
+                            <option value="5">5 ستاره</option>
+                            <option value="4">4 ستاره</option>
+                            <option value="3">3 ستاره</option>
+                            <option value="2">2 ستاره</option>
+                            <option value="1">1 ستاره</option>
+                        </select>
+                        <div class="invalid-feedback">لطفا به این شرکت امتیاز دهید.</div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label" for="review-text">نظر <span class='text-danger'>*</span></label>
+                        <textarea asp-for="@Model.AddCommentProductDto.Comments" class="form-control" id="review-text" rows="5" placeholder="پیام شما..." required></textarea>
+                        <div class="invalid-feedback">لطفا نظر خود را ثبت کنید.</div>
+                    </div>
+                    <button class="btn btn-primary btn-lg d-block w-100 rounded-pill mb-4" type="submit">ثبت نظر</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page header-->
+<section class="container pt-5 mt-5">
+    <!-- Breadcrumb-->
+    <nav class="mb-3 pt-md-3" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="city-guide-home-v1.html">خانه</a></li>
+            <li class="breadcrumb-item"><a href="city-guide-catalog.html">جستجوی اقامتگاه</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@Model.ProductDto.Name</li>
+        </ol>
+    </nav>
+    <div class="d-sm-flex align-items-center justify-content-between mb-4 pb-sm-2">
+        <h1 class="h2 me-3 mb-sm-0">@Model.ProductDto.Name</h1>
+        <div class="text-nowrap">
+            <button class="btn btn-icon btn-light-primary btn-xs shadow-sm rounded-circle" type="button" data-bs-toggle="tooltip" title="نشان کردن"><i class="fi-heart"></i></button>
+
+        </div>
+    </div>
+    <!-- Nav pills-->
+    <ul class="nav nav-pills border-bottom pb-3 mb-4">
+        <li class="nav-item"><a class="nav-link d-flex align-items-center" href="~/Bussiness/DetailBussinessMain?id=@Model.ProductDto.id"><i class="fi-image me-2"></i>گالری تصاویر</a></li>
+        <li class="nav-item"><a class="nav-link d-flex align-items-center" href="~/Bussiness/DetailBussinessInfo"><i class="fi-info-circle me-2"></i>اطلاعات</a></li>
+        <li class="nav-item"><a class="nav-link d-flex align-items-center active" href="city-guide-single-reviews.html"><i class="fi-edit me-2"></i>نظرات</a></li>
+    </ul>
+</section>
+<!-- Page content-->
+<section class="container pb-5 mb-md-4">
+    <div class="row">
+        <!-- Left column-->
+        <div class="col-md-7 mb-md-0 mb-4 pb-md-0 pb-2">
+            <h2 class="h5 mb-4">@Model.CommentProducts.Count() نظر ثبت شده</h2>
+           
+            <div class="d-flex flex-sm-row flex-column align-items-sm-center justify-content-between mb-4 pb-4 border-bottom">
+                <a class="btn btn-outline-primary rounded-pill mb-sm-0 mb-3" href="#modal-review" data-bs-toggle="modal"><i class="fi-edit mt-n1 ms-1 align-middle"></i>ثبت نظر</a>
+
+            </div>
+            @if (Model.CommentProducts.Count > 0)
+            {
+                @foreach (var item in Model.CommentProducts)
+                {
+                    <!-- Review-->
+                    <div class="mb-4 pb-4 border-bottom">
+                        <div class="d-flex justify-content-between mb-3">
+                            <div class="d-flex align-items-center ps-2">
+                                <img class="rounded-circle me-1" src="~/SiteFile/img/avatars/13.png" alt="Avatar" width="48">
+                                <div class="pe-2">
+                                    <h6 class="fs-base mb-0">@item.Name</h6>
+                                    <span class="star-rating">
+                                        @for (byte i = 1; i <= 5; i++)
+                                        {
+                                            if (i <= item.Score)
+                                            {
+                                                <i class="star-rating-icon fi-star-filled active"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="star-rating-icon fi-star"></i>
+                                            }
+                                        }
+                                    </span>
+                                </div>
+                            </div><span class="text-muted fs-sm">@item.insertTime</span>
+                        </div>
+                        <p>@item.Comments</p>
+                    </div>
+                }
+            }
+            else
+            {
+                <h2>هیچ نظری هنوز ثبت نشده است</h2>
+            }
+
+        </div>
+        <!-- Sidebar-->
+        <aside class="col-md-5">
+            <!-- Place card-->
+            <div class="card mb-4 p-2 shadow-sm">
+                <div class="card-body">
+                    <!-- Place info-->
+                    <div class="d-flex align-items-start mb-3 pb-2 border-bottom">
+
+                        <div class="pe-2 me-1">
+                            <h3 class="h5 mb-2">@Model.ProductDto.Name</h3>
+                            <ul class="list-unstyled d-flex flex-wrap fs-sm">
+                                <li class="me-2 mb-1 pe-1"><i class="fi-star-filled mt-n1 ms-1 text-warning align-middle opacity-70"></i><b>@Model.ProductDto.Score</b></li>
+                                <li class="me-2 mb-1 pe-1"><i class="fi-wallet mt-n1 ms-1 align-middle opacity-70"></i>@Model.ProductDto.lowPrice تومان</li>
+                                <li class="me-2 mb-1 pe-1"><i class="fi-map-pin mt-n1 ms-1 align-middle opacity-70"></i>@Model.Address.city</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Place contacts-->
+                    <div class="mb-3 pb-3 border-bottom">
+                        <h4 class="h5 mb-2">تماس با ما:</h4>
+                        <ul class="nav flex-column">
+                            <li class="nav-item mb-2"><a class="nav-link p-0 fw-normal d-flex align-items-start" href="#"><i class="fi-map-pin mt-1 me-2 align-middle opacity-70"></i>@FullAddress</a></li>
+                            <li class="nav-item mb-2"><a class="nav-link d-inline-block p-0 fw-normal d-inline-flex align-items-start" href="tel:@Model.Address.phoneNumber"><i class="fi-phone mt-1 me-2 align-middle opacity-70"></i>@Model.Address.phoneNumber</a></li>
+                            <li class="nav-item mb-2"><a class="nav-link p-0 fw-normal d-flex align-items-start" href="@Model.ProductDto.websiteUrl"><i class="fi-globe mt-1 me-2 align-middle opacity-60"></i>@Model.ProductDto.websiteUrl</a></li>
+                            <li class="nav-item"><a class="nav-link p-0 fw-normal d-flex align-items-start" href="@Model.ProductDto.Email"><i class="fi-mail mt-1 me-2 align-middle opacity-70"></i>@Model.ProductDto.Email</a></li>
+                        </ul>
+                    </div>
+                    <!-- Place pricing-->
+                    <div class="mb-3 pb-4 border-bottom">
+                        <div class="row row-cols-1">
+                            <div class="col mb-3">
+                                <h4 class="h5 mb-0"><span class="fs-5">@Model.ProductDto.lowPrice-@Model.ProductDto.maxPrice تومان</span><span class="fs-base fw-normal text-body">/شب</span></h4>
+                            </div>
+                            <div class="col"><a class="btn btn-primary btn-lg rounded-pill w-sm-auto w-100" href="#">رزرو هتل<i class="fi-chevron-right fs-sm ms-2"></i></a></div>
+                        </div>
+                    </div>
+                    <!-- Place following-->
+                    <div class="d-flex align-items-center">
+                        <h4 class="h5 mb-0 me-3">دنبال کردن: </h4>
+                        <div class="text-nowrap">
+                            <a class="btn btn-icon btn-light-primary btn-xs shadow-sm rounded-circle me-2" href="#">
+                                <i class="fi-facebook"></i>
+                            </a>
+                            <a class="btn btn-icon btn-light-primary btn-xs shadow-sm rounded-circle me-2" href="#">
+                                <i class="fi-instagram"></i>
+                            </a>
+                            <a class="btn btn-icon btn-light-primary btn-xs shadow-sm rounded-circle" href="#">
+                                <i class="fi-twitter"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Location (Map)-->
+            <div class="col-md-5">
+                <div class="form-label fw-bold pt-3 pb-2">مشاهده روی نقشه</div>
+               <div id="map" style="height: 300px;width:750px;"></div>
+</div>
+        </aside>
+    </div>
+</section>
+<!-- Recently viewed-->
+<section class="container pb-5 mb-lg-4">
+    <div class="d-flex align-items-center justify-content-between mb-4 pb-2">
+        <h2 class="h3 mb-0">آخرین بازدید</h2><a class="btn btn-link fw-normal ms-sm-3 p-0" href="city-guide-catalog.html">مشاهده همه<i class="fi-arrow-long-left ms-2"></i></a>
+    </div>
+    <div class="tns-carousel-wrapper tns-controls-outside-xxl tns-nav-outside mb-xxl-2">
+        <div class="tns-carousel-inner" data-carousel-options="{&quot;items&quot;: 3, &quot;gutter&quot;: 24, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:1,&quot;nav&quot;:true},&quot;500&quot;:{&quot;items&quot;:2},&quot;850&quot;:{&quot;items&quot;:3},&quot;1400&quot;:{&quot;items&quot;:3,&quot;nav&quot;:false}}}">
+            @foreach (var item in Model.RelatedBussiness)
+            {
+                <!-- Item-->
+                <div>
+                    <div class="position-relative">
+                        <div class="position-relative mb-3">
+                            <button class="btn btn-icon btn-light-primary btn-xs text-primary rounded-circle position-absolute top-0 end-0 m-3 zindex-5" type="button" data-bs-toggle="tooltip" data-bs-placement="right" title="نشان کردن"><i class="fi-heart"></i></button><img class="rounded-3" src="~/Images/Product/@item.Src" alt="Article img">
+                        </div>
+                        <h3 class="mb-2 fs-lg"><a class="nav-link stretched-link" href="~/Bussiness/DetailBussinessMain?id=@item.BussinessId">@item.Name</a></h3>
+                        <ul class="list-inline mb-0 fs-sm">
+                            <li class="list-inline-item pe-1"><i class="fi-star-filled mt-n1 ms-1 fs-base text-warning align-middle"></i><b>@item.Score</b><span class="text-muted">&nbsp;</span></li>
+                            <li class="list-inline-item pe-1"><i class="fi-credit-card mt-n1 ms-1 fs-base text-muted align-middle"></i>@item.LowPrice تومان</li>
+                            <li class="list-inline-item pe-1"><i class="fi-map-pin mt-n1 ms-1 fs-base text-muted align-middle"></i>@item.City</li>
+                        </ul>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+<script>
+    var latitude = JSON.parse(@Html.Raw(Json.Serialize(Model.Address.latitude)));
+
+    var longitude =JSON.parse(@Html.Raw(Json.Serialize(Model.Address.longitude)));
+
+    var myMap = new L.Map('map', {
+        key: 'web.0672d81da5734d0f8f35ce7beb9637f2',
+        maptype: 'dreamy',
+        poi: true,
+        traffic: false,
+        center: [latitude, longitude],
+        zoom: 15,
+
+    });
+    var marker = L.marker([latitude, longitude]).addTo(myMap);
+    myMap.on('click', function (data) {
+        marker.bindPopup(address).openPopup();
+        marker.setLatLng([latitude, longitude]);
+        //set map center to address
+    });
+</script>
+@section script{
+    <script src="/SiteFile/vendor/leaflet/dist/leaflet.js"></script>
+
+}

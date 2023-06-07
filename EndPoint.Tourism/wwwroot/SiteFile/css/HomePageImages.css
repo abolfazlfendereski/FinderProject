@@ -1,0 +1,13 @@
+﻿.FigureHome {
+    font-size: 12px;
+    direction: rtl;
+    list-style: none;
+    font-family: iranyekan;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+    margin: 0;
+    width: 100%;
+    position: relative;
+    padding-bottom: 115%;
+    border-radius: .625rem;
+}

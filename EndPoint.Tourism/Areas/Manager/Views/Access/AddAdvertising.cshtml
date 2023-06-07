@@ -1,0 +1,77 @@
+﻿
+@{
+    ViewData["Title"] = "AddAdvertising";
+    Layout = "~/Areas/Manager/Views/Shared/_LayoutManagement.cshtml";
+}
+
+@section Sheets{
+    <meta name="keywords" content="materialize, admin template, dashboard template, flat admin template, responsive admin template, eCommerce dashboard, analytic dashboard">
+    <meta name="author" content="ThemeSelect">
+    <title>ثبت اخبار</title>
+    <link rel="apple-touch-icon" href="~/app-assets/images/favicon/apple-touch-icon-152x152.png">
+    <link rel="shortcut icon" type="image/x-icon" href="~/app-assets/images/favicon/favicon-32x32.png">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- BEGIN: VENDOR CSS-->
+
+    <link rel="stylesheet" type="text/css" href="~/app-assets/vendors/flag-icon/css/flag-icon.min.css">
+    <!-- END: VENDOR CSS-->
+}
+
+<!-- END: Head-->
+<div class="row">
+    <div class="col s12">
+        <div id="html-validations" class="card card-tabs">
+            <div class="card-content">
+                <div class="card-title">
+                    <div class="row">
+                        <div class="col s12 m6 l10">
+                            <h4 class="card-title">ثبت اخبار جدید</h4>
+                        </div>
+                        <div class="col s12 m6 l2">
+                        </div>
+                    </div>
+                </div>
+                <div id="html-view-validations">
+                    <form action="AddAdvertising" id="formValidate0" method="post" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <label for="uname0">موضوع</label>
+                                <input class="validate" required id="" name="title" placeholder="" type="text">
+                            </div>
+                          
+                            <div class="input-field col s12">
+                                <label for="cpassword0">توضیحات </label>
+                                <input class="validate" name="txt" required id="" type="text">
+                            </div>
+
+                            <div class="input-field col s12">
+                                <label class="contact-input" for="fn">عکس</label>
+                                <input id="" type="file" name="ImageFile" />
+                            </div>
+                            <div class="input-field col s12">
+                                <button class="btn waves-effect waves-light right iransans" id="ad" type="submit" name="action">
+                                    ثبت
+                                    <i class="material-icons right">send</i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- BEGIN VENDOR JS-->
+@section Script{
+
+
+    <!-- BEGIN PAGE VENDOR JS-->
+    <script src="~/app-assets/vendors/jquery-validation/jquery.validate.min.js"></script>
+    <!-- END PAGE VENDOR JS-->
+    <!-- BEGIN PAGE LEVEL JS-->
+    <script src="~/app-assets/js/scripts/form-validation.js"></script>
+    <!-- END PAGE LEVEL JS-->
+}
+

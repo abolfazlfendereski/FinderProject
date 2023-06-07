@@ -1,0 +1,422 @@
+﻿@addTagHelper *, LazZiya.TagHelpers
+@model GetAllBussnessViewModel
+@{
+    ViewData["Title"] = "GetAllBussiness";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var category = string.IsNullOrEmpty(Model.ProdoctBriefVM.FirstOrDefault().CategoryName) ? Model.CatgegoryName : Model.ProdoctBriefVM.FirstOrDefault().CategoryName;
+    int pageNumber = 1;
+    int pageSize = 20;
+    int.TryParse(Context.Request.Query["page"], out pageNumber);
+    int.TryParse(Context.Request.Query["pageSize"], out pageSize);
+}
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="manifest" href="site.webmanifest">
+<link rel="mask-icon" color="#5bbad5" href="safari-pinned-tab.svg">
+<div class="container-fluid mt-5 pt-5 p-0">
+    <div class="row g-0 mt-n3">
+        <!-- Filters sidebar (Offcanvas on mobile)-->
+        <aside class="col-lg-4 col-xl-3 border-top-lg border-end-lg shadow-sm px-3 px-xl-4 px-xxl-5 pt-lg-2">
+            <div class="offcanvas offcanvas-start offcanvas-collapse" id="filters-sidebar">
+                <div class="offcanvas-header d-flex d-lg-none align-items-center">
+                    <h2 class="h5 mb-0">جستجو</h2>
+                    <button class="btn-close" type="button" data-bs-dismiss="offcanvas"></button>
+                </div>
+                <!-- Search form-->
+                <div class="offcanvas-header d-block border-bottom pt-0 pt-lg-4 px-lg-0">
+                    <form class="form-group mb-lg-2 rounded-pill">
+                        <div class="input-group">
+                            <span class="input-group-text text-muted"><i class="fi-search"></i></span>
+                            <input class="form-control" type="text" placeholder="جستجو...">
+                        </div>
+                        <button class="btn btn-primary rounded-pill d-lg-inline-block d-none" type="button">جستجو</button>
+                        <button class="btn btn-icon btn-primary rounded-circle flex-shrink-0 d-lg-none d-inline-flex" type="button"><i class="fi-search mt-n2"></i></button>
+                    </form>
+                </div>
+                <!-- Nav tabs-->
+                <div class="offcanvas-header d-block border-bottom py-lg-4 py-3 px-lg-0">
+                    <ul class="nav nav-pills" role="tablist">
+                        <li class="nav-item"><a class="nav-link d-flex align-items-center active" href="#categories" data-bs-toggle="tab" role="tab"><i class="fi-list me-2"></i>دسته بندی</a></li>
+                        <li class="nav-item"><a class="nav-link d-flex align-items-center" href="#filters" data-bs-toggle="tab" role="tab"><i class="fi-filter-alt-horizontal me-2"></i>فیلتر</a></li>
+                    </ul>
+                </div>
+                <div class="offcanvas-body py-lg-4">
+                    <!-- Tabs content-->
+                    <div class="tab-content">
+                        <!-- Categories-->
+                        <div class="tab-pane fade show active" id="categories" role="tabpanel">
+                            <div class="row row-cols-lg-2 row-cols-1 g-3 categories-guid">
+                                <div class="col">
+                                    <a class="icon-box card card-body h-100 border-0 shadow-sm card-hover text-center" href="#">
+                                        <div class="icon-box-media bg-faded-accent text-accent rounded-circle mb-3 mx-auto"><i class="fi-bed"></i></div>
+                                        <h3 class="icon-box-title fs-base mb-0">اقامتگاه و بوم گردی</h3>
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <a class="icon-box card card-body h-100 border-0 shadow-sm card-hover text-center" href="#">
+                                        <div class="icon-box-media bg-faded-primary text-primary rounded-circle mb-3 mx-auto"><i class="fi-dumbell"></i></div>
+                                        <h3 class="icon-box-title fs-base mb-0">ورزشی</h3>
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <a class="icon-box card card-body h-100 border-0 shadow-sm card-hover text-center" href="#">
+                                        <div class="icon-box-media bg-faded-warning text-warning rounded-circle mb-3 mx-auto"><i class="fi-cafe"></i></div>
+                                        <h3 class="icon-box-title fs-base mb-0">رستوران و کافی شاپ</h3>
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <a class="icon-box card card-body h-100 border-0 shadow-sm card-hover text-center" href="#">
+                                        <div class="icon-box-media bg-faded-success text-success rounded-circle mb-3 mx-auto"><i class="fi-disco-ball"></i></div>
+                                        <h3 class="icon-box-title fs-base mb-0">تور و سفر</h3>
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <a class="icon-box card card-body h-100 border-0 shadow-sm card-hover text-center" href="#">
+                                        <div class="icon-box-media bg-faded-primary text-primary rounded-circle mb-3 mx-auto"><i class="fi-shopping-bag"></i></div>
+                                        <h3 class="icon-box-title fs-base mb-0">مراکز خرید</h3>
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <a class="icon-box card card-body h-100 border-0 shadow-sm card-hover text-center" href="#">
+                                        <div class="icon-box-media bg-faded-info text-info rounded-circle mb-3 mx-auto"><i class="fi-meds"></i></div>
+                                        <h3 class="icon-box-title fs-base mb-0">پزشکی و سلامتی</h3>
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <a class="icon-box card card-body h-100 border-0 shadow-sm card-hover text-center" href="#">
+                                        <div class="icon-box-media bg-faded-success text-success rounded-circle mb-3 mx-auto"><i class="fi-museum"></i></div>
+                                        <h3 class="icon-box-title fs-base mb-0">هنر و تئاتر</h3>
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <a class="icon-box card card-body h-100 border-0 shadow-sm card-hover text-center" href="#">
+                                        <div class="icon-box-media bg-faded-warning text-warning rounded-circle mb-3 mx-auto"><i class="fi-makeup"></i></div>
+                                        <h3 class="icon-box-title fs-base mb-0">آرایشی و زیبایی</h3>
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <a class="icon-box card card-body h-100 border-0 shadow-sm card-hover text-center" href="#">
+                                        <div class="icon-box-media bg-faded-primary text-primary rounded-circle mb-3 mx-auto"><i class="fi-entertainment"></i></div>
+                                        <h3 class="icon-box-title fs-base mb-0">تفریحی و سرگرمی</h3>
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <a class="icon-box card card-body h-100 border-0 shadow-sm card-hover text-center" href="#">
+                                        <div class="icon-box-media bg-faded-info text-info rounded-circle mb-3 mx-auto"><i class="fi-car"></i></div>
+                                        <h3 class="icon-box-title fs-base mb-0">خدمات خودرو</h3>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Filters-->
+                        <div class="tab-pane fade" id="filters" role="tabpanel">
+                            <form action="GetAllBussiness" method="get"></form>
+                            <div class="pb-4 mb-2">
+                                <h3 class="h6">موقعیت مکانی</h3>
+                                <select class="form-select" name="City" onChange="iranwebsv(this.value);" id="State-city" required>
+                                    <option value="0">لطفا استان را انتخاب نمایید</option>
+                                    <option value="1">تهران</option>
+                                    <option value="2">گیلان</option>
+                                    <option value="3">آذربایجان شرقی</option>
+                                    <option value="4">خوزستان</option>
+                                    <option value="5">فارس</option>
+                                    <option value="6">اصفهان</option>
+                                    <option value="7">خراسان رضوی</option>
+                                    <option value="8">قزوین</option>
+                                    <option value="9">سمنان</option>
+                                    <option value="10">قم</option>
+                                    <option value="11">مرکزی</option>
+                                    <option value="12">زنجان</option>
+                                    <option value="13">مازندران</option>
+                                    <option value="14">گلستان</option>
+                                    <option value="15">اردبیل</option>
+                                    <option value="16">آذربایجان غربی</option>
+                                    <option value="17">همدان</option>
+                                    <option value="18">کردستان</option>
+                                    <option value="19">کرمانشاه</option>
+                                    <option value="20">لرستان</option>
+                                    <option value="21">بوشهر</option>
+                                    <option value="22">کرمان</option>
+                                    <option value="23">هرمزگان</option>
+                                    <option value="24">چهارمحال و بختیاری</option>
+                                    <option value="25">یزد</option>
+                                    <option value="26">سیستان و بلوچستان</option>
+                                    <option value="27">ایلام</option>
+                                    <option value="28">کهگلویه و بویراحمد</option>
+                                    <option value="29">خراسان شمالی</option>
+                                    <option value="30">خراسان جنوبی</option>
+                                    <option value="31">البرز</option>
+
+                                </select>
+                                <label class="form-label" for="City">شهرستان <span class="text-danger">*</span></label>
+                                <select class="form-select" name="region" id="City" required>
+                                </select>
+
+                            </div>
+                           
+                            <div class="pb-4 mb-2">
+                                <h3 class="h6">دسته بندی</h3>
+                                <div class="dropdown mb-sm-0 mb-3" data-bs-toggle="select">
+                                    <button class="btn btn-outline-secondary d-flex align-items-center w-100 px-4 fw-normal text-start dropdown-toggle" type="button" data-bs-toggle="dropdown"><i class="fi-list me-2 text-muted"></i><span class="dropdown-toggle-label d-block w-100 text-right">تمام دسته بندی ها</span></button>
+                                    <input type="hidden">
+                                    <ul class="dropdown-menu w-100" name="categoryId">
+                                        <li><a onclick="subChange(1)" name="1" class="dropdown-item"><i class="fi-bed fs-lg opacity-60"></i><span class="dropdown-item-label"> اقامتگاه</span></a></li>
+                                        <li><a onclick="subChange(2)" name="2" class="dropdown-item" href="#"><i class="fi-cafe me-2 fs-lg opacity-60"></i><span class="dropdown-item-label">رستوران و کافی شاپ</span></a></li>
+                                        <li><a onclick="subChange(3)" name="3" class="dropdown-item" href="#"><i class="fi-shopping-bag me-2 fs-lg opacity-60"></i><span class="dropdown-item-label">مرکز خرید</span></a></li>
+                                        <li><a onclick="subChange(4)" name="4" class="dropdown-item" href="#"><i class="fi-museum me-2 fs-lg opacity-60"></i><span class="dropdown-item-label">هنر و تئاتر</span></a></li>
+                                        <li><a onclick="subChange(5)" name="5" class="dropdown-item" href="#"><i class="fi-entertainment me-2 fs-lg opacity-60"></i><span class="dropdown-item-label">تفریحی و سرگرمی</span></a></li>
+                                        <li><a onclick="subChange(6)" name="6" class="dropdown-item" href="#"><i class="fi-meds me-2 fs-lg opacity-60"></i><span class="dropdown-item-label">پزشکی و سلامتی</span></a></li>
+                                        <li><a onclick="subChange(7)" name="7" class="dropdown-item" href="#"><i class="fi-makeup me-2 fs-lg opacity-60"></i><span class="dropdown-item-label">آرایشی و زیبایی</span></a></li>
+                                        <li><a onclick="subChange(8)" name="8" class="dropdown-item" href="#"><i class="fi-car me-2 fs-lg opacity-60"></i><span class="dropdown-item-label">خدمات خودرو</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="pb-4 mb-2">
+                                <label class="form-label" for="subcategory">زیر دسته <span class="text-danger">*</span></label>
+
+                                <select class="form-select" onchange="selectCate()" id="subcategory" name="subcategory" required>
+                                    <option>لطفا زیر دسته بندی را انتخاب نمایید</option>
+
+                                </select>
+                            </div>
+
+                            <div class="pb-4 mb-2">
+                                <h3 class="h6">قیمت</h3>                               
+                                <div class="d-flex align-items-center">
+                                    <div class="w-50 pe-2">
+                                        <div class="input-group flex-row-reverse">
+                                            <span class="input-group-text fs-base">ت</span>
+                                            <input id="lowId" name="LowPrice" class="form-control range-slider-value-max" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="text-muted">—</div>
+                                    <div class="w-50 ps-2">
+                                        <div class="input-group flex-row-reverse">
+                                            <span class="input-group-text fs-base">ت</span>
+                                            <input id="maxId" name="MaxPrice" class="form-control range-slider-value-min" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="pb-4 mb-2" name="score" id="score">
+                                <h3 class="h6">امتیاز</h3>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="5" id="5-star">
+                                    <label class="form-check-label fs-sm align-middle mt-n2" for="5-star">
+                                        <span class="star-rating"><i class="star-rating-icon fi-star-filled active"></i><i class="star-rating-icon fi-star-filled active"></i><i class="star-rating-icon fi-star-filled active"></i><i class="star-rating-icon fi-star-filled active"></i><i class="star-rating-icon fi-star-filled active"></i></span>
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="4" id="4-star">
+                                    <label class="form-check-label fs-sm align-middle mt-n2" for="4-star">
+                                        <span class="star-rating"><i class="star-rating-icon fi-star-filled active"></i><i class="star-rating-icon fi-star-filled active"></i><i class="star-rating-icon fi-star-filled active"></i><i class="star-rating-icon fi-star-filled active"></i><i class="star-rating-icon fi-star"></i></span>
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="3" id="3-star">
+                                    <label class="form-check-label fs-sm align-middle mt-n2" for="3-star">
+                                        <span class="star-rating"><i class="star-rating-icon fi-star-filled active"></i><i class="star-rating-icon fi-star-filled active"></i><i class="star-rating-icon fi-star-filled active"></i><i class="star-rating-icon fi-star"></i><i class="star-rating-icon fi-star"></i></span>
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="2" id="2-star">
+                                    <label class="form-check-label fs-sm align-middle mt-n2" for="2-star">
+                                        <span class="star-rating"><i class="star-rating-icon fi-star-filled active"></i><i class="star-rating-icon fi-star-filled active"></i><i class="star-rating-icon fi-star"></i><i class="star-rating-icon fi-star"></i><i class="star-rating-icon fi-star"></i></span>
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="1" id="1-star">
+                                    <label class="form-check-label fs-sm align-middle mt-n2" for="1-star">
+                                        <span class="star-rating"><i class="star-rating-icon fi-star-filled active"></i><i class="star-rating-icon fi-star"></i><i class="star-rating-icon fi-star"></i><i class="star-rating-icon fi-star"></i><i class="star-rating-icon fi-star"></i></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="pb-4 mb-2">
+                                <h3 class="h6">تعداد اتاق</h3>
+                                <select class="form-select mb-2" name="NumberRoom" id="numberRoom">
+                                    <option value="10" selected>10 اتاق</option>
+                                    <option value="20">20 اتاق</option>
+                                    <option value="30">30 اتاق</option>
+                                    <option value="40">40 اتاق</option>
+                                    <option value="50">50 اتاق</option>
+                                </select>
+                            </div>
+
+                            <div class="border-top py-4">
+
+                                <button  class="btn btn-outline-accent rounded-pill" type="submit"><i class=" me-1"></i> فیلتر کردن</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <!-- Page content-->
+        <div class="col-lg-8 col-xl-9 position-relative overflow-hidden pb-5 pt-4 px-3 px-xl-4 px-xxl-5">
+            <!-- Map popup-->
+            <div class="map-popup invisible" id="map">
+                <button class="btn btn-icon btn-light btn-sm shadow-sm rounded-circle" type="button" data-bs-toggle-class="invisible" data-bs-target="#map"><i class="fi-x fs-xs"></i></button>
+                <div class="interactive-map" data-map-options-json="json/map-options-city-guide.json"></div>
+            </div>
+            <!-- Breadcrumb-->
+            <nav class="mb-3 pt-md-2" aria-label="Breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="city-guide-home-v1.html">خانه</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">جستجو محل @category</li>
+                </ol>
+            </nav>
+            <!-- Title-->
+            <div class="d-sm-flex align-items-center justify-content-between pb-3 pb-sm-4">
+                <h1 class="h2 mb-sm-0">جستجو محل @category</h1>
+            </div>
+            <!-- Sorting-->
+            <div class="d-flex flex-sm-row flex-column align-items-sm-center align-items-stretch my-2">
+                <div class="d-flex align-items-center flex-shrink-0">
+                    <label class="fs-sm me-2 pe-1 text-nowrap" for="sortby"><i class="fi-arrows-sort text-muted mt-n1 me-2"></i>مرتب سازی</label>
+                    <select class="form-select form-select-sm" id="sortby">
+                        <option>جدیدترین</option>
+                        <option>پربازدید</option>
+                        <option>قیمت بالا - پایین</option>
+                        <option>قیمت پایین - بالا</option>
+                        <option>امتیاز بالا</option>
+                        <option>امتیاز بالا</option>
+                    </select>
+                </div>
+                <hr class="d-none d-sm-block w-100 mx-4">
+                <div class="d-none d-sm-flex align-items-center flex-shrink-0 text-muted"><i class="fi-check-circle me-2"></i><span class="fs-sm mt-n1">@Model.totalRow نتیجه یافت شد</span></div>
+            </div>
+            <!-- Catalog grid-->
+            <div class="row row-cols-xl-3 row-cols-sm-2 row-cols-1 gy-4 gx-3 gx-xxl-4 py-4">
+                @if (Model.ProdoctBriefVM.Count() > 0)
+                {
+                    foreach (var item in Model.ProdoctBriefVM)
+                    {
+                        <!-- Item-->
+                        <div class="col pb-sm-2">
+                            <article class="position-relative">
+                                <div class="position-relative mb-3">
+                                    <a href="~/PersonInformation/AddFavorite?id=@item.BussinessId" class="btn btn-icon btn-light-primary btn-xs text-primary rounded-circle position-absolute top-0 end-0 m-3 zindex-5" type="button" data-bs-toggle="tooltip" data-bs-placement="right" title="نشان کردن"><i class="fi-heart"></i></a><img class="rounded-3" src="~/Images/Product/@item.Src" alt="Article img">
+                                </div>
+                                <h3 class="mb-2 fs-lg"><a class="nav-link stretched-link" href="~/Bussiness/DetailBussinessMain?id=@item.BussinessId">@item.Name</a></h3>
+                                <ul class="list-inline mb-0 fs-sm">
+                                    <li class="list-inline-item ps-1"><i class="fi-star-filled mt-n1 ms-1 fs-base text-warning align-middle"></i><b>@item.Score</b><span class="text-muted">&nbsp;</span></li>
+                                    <li class="list-inline-item ps-1"><i class="fi-credit-card mt-n1 ms-1 fs-base text-muted align-middle"></i>@item.LowPrice تومان</li>
+                                    <li class="list-inline-item ps-1"><i class="fi-map-pin mt-n1 ms-1 fs-base text-muted align-middle"></i>@item.City</li>
+                                </ul>
+                            </article>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <br>
+                    <br>
+                    <h2>هیچ اطلاعاتی یافت نشد</h2>
+                }
+
+            </div>
+            <div class="pagination-product">
+                <nav aria-label="Page navigation example">
+                    <paging total-records="@Model.totalRow"
+                            page-no="@pageNumber==0?1:pageNumber"
+                            page-size="@pageSize==0?20:pageSize"
+                            show-prev-next="true"
+                            show-total-pages="false"
+                            show-total-records="false"
+                            show-page-size-nav="true"
+                            show-first-numbered-page="true"
+                            show-last-numbered-page="true"
+                            query-string-key-page-no="Page"
+                            query-string-key-page-size="PageSize"
+                            query-string-value="@@(Request.QueryString.Value)"
+                            gap-size="2">
+                    </paging>
+
+                </nav>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="~/SiteFile/city.js"></script>
+<script>
+    function subChange(id) {
+        var select = document.getElementById("subcategory");
+        removeOptions(select);
+        $.ajax({
+            url: "/bussiness/subChange",
+            data: { "parentId": id },
+            success: function (data) {
+
+                for (var i = 0; i < data.length; i++) {
+
+                    var opt = document.createElement('option');
+                    opt.value = JSON.stringify(data[i].id);
+                    opt.innerHTML = JSON.stringify(data[i].name).toString().replace(/['"]+/g, '');
+                    select.appendChild(opt);
+                }
+            }
+        });
+
+    }
+    function removeOptions(selectElement) {
+        var i, L = selectElement.options.length;
+        for (i = L; i >= 0; i--) {
+            selectElement.remove(i);
+        }
+    }
+</script>
+<script>
+    //function filterBussiness() {
+    //    alert("Test");
+    //    var data = new FormData();
+    //    data.append("categoryId", $("#subcategory").find("option:selected").val());
+    //    console.log($("#subcategory").find("option:selected").val());
+    //    data.append("region", $("#City").find("option:selected").text());
+    //    data.append("LowPrice", $("#lowId").val());
+    //    data.append("MaxPrice", $("#maxId").val());
+    //    data.append("city", $("#State-city").find("option:selected").text());
+    //    data.append("NumberRoom", $("#numberRoom").find("option:selected").text());
+    //    $('#score input:checked').each(function () {
+    //        var idtype = $(this).attr('id');
+    //        sdata.append('score', $("#" + idtype).attr("name"));
+    //        console.log($("#" + idtype).attr("name"));
+    //    });
+    //    console.log($("#City").find("option:selected").text());
+    //    console.log($("#lowId").val());
+    //    console.log($("#maxId").val());
+    //    console.log($("#State-city").find("option:selected").text());
+    //    console.log($("#numberRoom").find("option:selected").text());
+    //    $.ajax({
+    //        url: "/Bussiness/GetAllBussiness",
+    //        method: "GET",
+    //        processData: false,
+    //        contentType: false,
+    //        data: data,
+    //        success: function () {
+
+    //        }
+    //    });
+    //}
+</script>
+<script>
+    function AddFavorite(id) {
+        alert("SAdadasd");
+        $.ajax({
+            url: "~/PersonInformation/AddFavorite",
+            data: { "id": id },
+            success=function (data) {
+
+            }
+        });
+    }
+    function test() {
+        alert("test");
+    }
+</script>
+
+<script src="~/SiteFile/vendor/nouislider/dist/nouislider.min.js"></script>

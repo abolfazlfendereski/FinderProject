@@ -1,0 +1,66 @@
+﻿
+@{
+    ViewData["Title"] = "GetMyOrders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model List<GetMyOrdersDto>
+<!-- Page content-->
+<!-- Page container-->
+<div class="container mt-5 mb-md-4 py-5">
+    <!-- Breadcrumbs-->
+    <nav class="mb-4 pt-md-3" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="city-guide-home-v1.html">خانه</a></li>
+            <li class="breadcrumb-item"><a href="city-guide-account-info.html">حساب کاربری</a></li>
+            <li class="breadcrumb-item active" aria-current="page">لیست نظرات من</li>
+        </ol>
+    </nav>
+
+    <!-- Page content-->
+    <div class="card card-body p-4 p-md-5 shadow-sm">
+        <!-- Account nav-->
+        <div class="mt-md-n3 mb-4">
+            <a class="btn btn-outline-primary btn-lg rounded-pill w-100 d-md-none" href="#account-nav" data-bs-toggle="collapse"><i class="fi-align-justify me-2"></i>منو اکانت</a>
+            <div class="collapse d-md-block" id="account-nav">
+                <ul class="nav nav-pills flex-column flex-md-row pt-3 pt-md-0 pb-md-4 border-bottom-md">
+                    <li class="nav-item mb-md-0 pe-md-1"><a class="nav-link" href="~/PersonInformation/PersonalInformation" aria-current="page"><i class="fi-user mt-n1 me-2 fs-base"></i>اطلاعات فردی</a></li>
+                    <li class="nav-item mb-md-0 me-md-2 pe-md-1"><a class="nav-link" href="~/PersonInformation/PersonalFavorite"><i class="fi-heart mt-n1 me-2 fs-base"></i>مورد علاقه های من</a></li>
+                    <li class="nav-item mb-md-0 me-md-2 pe-md-1"><a class="nav-link " href="~/PersonInformation/PersonalComments"><i class="fi-star mt-n1 me-2 fs-base"></i>لیست نظرات من</a></li>
+                    <li class="nav-item mb-md-0 me-md-2"><a class="nav-link active" href="~/PersonInformation/GetMyOrders"><i class="fi-bell mt-n1 me-2 fs-base"></i>رزرو شده های من</a></li>
+                    <li class="nav-item d-md-none"><a class="nav-link" href="~/Account/Logout"><i class="fi-logout mt-n1 me-2 fs-base"></i>خروج</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="d-flex flex-md-row flex-column align-items-md-center justify-content-md-between mb-4 py-2">
+            <h1 class="h4 mb-md-0">لیست رزرو های من</h1>
+
+        </div>
+        @{
+            if (Model.Count == 0)
+            {
+                <h3>هیچ رزروی انجام نشده است</h3>
+            }
+            else
+            {
+                foreach (var item in Model)
+                {
+                    var date = item.BookBussinessDtos.FromDate;
+                    var reserve = date + " به تعداد نفرات: " + item.BookBussinessDtos.Number + "رزرو شده است";
+                    <!-- Review-->
+                    <div class="row mb-4 pb-4 border-bottom">
+                        <div class="col-md-3 mb-md-0 mb-3">
+                            <h2 class="mb-2 fs-base"><span class="fw-normal me-1">برای: </span><a class="nav-link d-inline-block p-0" href="~/Bussiness/DetailBussinessMain?id=@item.ProdoctbriefDtos.BussinessId">@item.ProdoctbriefDtos.Name</a></h2>
+                            <span class="fs-sm text-muted">@date</span>
+                        </div>
+                        <div class="col-md-9">
+                            <p class="mb-3">@reserve</p>
+                        </div>
+                    </div>
+                }
+            }
+        }
+
+
+
+    </div>
+</div>

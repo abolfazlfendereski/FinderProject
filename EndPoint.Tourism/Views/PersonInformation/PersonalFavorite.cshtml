@@ -1,0 +1,85 @@
+﻿
+@{
+    ViewData["Title"] = "PersonalFavorite";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model GetFavoritePersonal
+<!-- Page container-->
+<div class="container mt-5 mb-md-4 py-5">
+    <!-- Breadcrumbs-->
+    <nav class="mb-4 pt-md-3" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="city-guide-home-v1.html">خانه</a></li>
+            <li class="breadcrumb-item"><a href="city-guide-account-info.html">حساب کاربری</a></li>
+            <li class="breadcrumb-item active" aria-current="page">لیست مورد علاقه های من</li>
+        </ol>
+    </nav>
+    <!-- Account header-->
+    <div class="d-flex align-items-center justify-content-between pb-4 mb-2">
+        <div class="d-flex align-items-center">
+            <div class="position-relative flex-shrink-0">
+                <img class="rounded-circle border border-white" src="~/SiteFile/img/avatars/29.png" width="100" alt="Annette Black">
+                <button class="btn btn-icon btn-light btn-xs rounded-circle shadow-sm position-absolute start-0 bottom-0" type="button" data-bs-toggle="tooltip" title="تغییر تصویر"><i class="fi-pencil fs-xs"></i></button>
+            </div>
+            <div class="pe-3 pe-sm-4">
+                <h3 class="h4 font-vazir mb-2">@Model.PersonalInformation.FullName</h3>
+                
+            </div>
+        </div><a class="nav-link p-0 d-none d-md-block" href="~/Account/Logout"><i class="fi-logout mt-n1 me-2"></i>خروج</a>
+    </div>
+    <!-- Page content-->
+    <div class="card card-body p-4 p-md-5 shadow-sm">
+        <!-- Account nav-->
+        <div class="mt-md-n3 mb-4">
+            <a class="btn btn-outline-primary btn-lg rounded-pill w-100 d-md-none" href="#account-nav" data-bs-toggle="collapse"><i class="fi-align-justify me-2"></i>منو اکانت</a>
+            <div class="collapse d-md-block" id="account-nav">
+                <ul class="nav nav-pills flex-column flex-md-row pt-3 pt-md-0 pb-md-4 border-bottom-md">
+                    <li class="nav-item mb-md-0 pe-md-1"><a class="nav-link" href="~/PersonInformation/PersonalInformation" aria-current="page"><i class="fi-user mt-n1 me-2 fs-base"></i>اطلاعات فردی</a></li>
+                    <li class="nav-item mb-md-0 me-md-2 pe-md-1"><a class="nav-link active" href="~/PersonInformation/PersonalFavorite"><i class="fi-heart mt-n1 me-2 fs-base"></i>مورد علاقه های من</a></li>
+                    <li class="nav-item mb-md-0 me-md-2 pe-md-1"><a class="nav-link" href="~/PersonInformation/PersonalComments"><i class="fi-star mt-n1 me-2 fs-base"></i>لیست نظرات من</a></li>
+                    <li class="nav-item mb-md-0 me-md-2"><a class="nav-link" href="~/PersonInformation/GetMyOrders"><i class="fi-bell mt-n1 me-2 fs-base"></i>رزرو شده های من</a></li>
+                    @if (Model.HasBussiness)
+                    {
+                        <li class="nav-item mb-md-0 me-md-2"><a class="nav-link" href="~/PersonInformation/GetAllOrders"><i class="fi-bell mt-n1 me-2 fs-base"></i>رزرو شده ها</a></li>
+
+                    }
+                    <li class="nav-item d-md-none"><a class="nav-link" href="~/Account/Logout"><i class="fi-logout mt-n1 me-2 fs-base"></i>خروج</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="d-flex flex-md-row flex-column align-items-md-center justify-content-md-between mb-4 pt-2">
+            <h1 class="h4 mb-md-0">لیست مورد علاقه ها</h1>
+            <!-- Sort-->
+        </div>
+        <!-- Favorites grid-->
+        <div class="row row-cols-lg-3 row-cols-sm-2 row-cols-1 gy-4 gx-3 gx-lg-4">
+            @if (Model.ProdoctbriefDtos.Count() == 0)
+            {
+                <h3>هیچ علاقه مندی اضافه نشده است</h3>
+            }
+            else
+            {
+                @foreach (var item in Model.ProdoctbriefDtos)
+                {
+                    <!-- Item-->
+                    <div class="col pt-2">
+                        <div class="position-relative">
+                            <div class="position-relative mb-3">
+                                <button class="btn btn-icon btn-light-primary btn-xs text-primary rounded-circle position-absolute top-0 end-0 m-3 zindex-5" type="button" data-bs-toggle="tooltip" data-bs-placement="right" title="حذف از لیست"><i class="fi-heart-filled"></i></button><img class="rounded-3" src="~/Images/Product/@item.Src" alt="Article img">
+                            </div>
+                            <h3 class="mb-2 fs-lg"><a class="nav-link stretched-link" href="city-guide-single.html">@item.Name</a></h3>
+                            <ul class="list-inline mb-0 fs-sm">
+                                <li class="list-inline-item ps-1"><i class="fi-star-filled mt-n1 ms-1 fs-base text-warning align-middle"></i><b>@item.Score</b><span class="text-muted"></span></li>
+                                <li class="list-inline-item ps-1"><i class="fi-credit-card mt-n1 ms-1 fs-base text-muted align-middle"></i>@item.LowPrice تومان</li>
+                                <li class="list-inline-item ps-1"><i class="fi-map-pin mt-n1 ms-1 fs-base text-muted align-middle"></i>@item.City</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                }
+            }
+
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,414 @@
+﻿@inject SignInManager<User> SignInManager
+<!DOCTYPE html>
+<html lang="fa">
+@*<meta http-equiv="content-type" content="text/html;charset=utf-8" />*@
+<head>
+    <meta charset="utf-8">
+    <title>قالب Finder | قالب چند منظوره فایندر راهنما سفر | خانه - نسخه 1</title>
+    <!-- SEO Meta Tags-->
+    <meta name="description" content="Finder - Directory &amp; Listings Bootstrap Template">
+    <meta name="keywords" content="bootstrap, business, directory, listings, e-commerce, car dealer, city guide, real estate, job board, user account, multipurpose, ui kit, html5, css3, javascript, gallery, slider, touch">
+    <meta name="author" content="Createx Studio">
+    <!-- Viewport-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Favicon and Touch Icons-->
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="mask-icon" color="#5bbad5" href="~/SiteFile/safari-pinned-tab.svg">
+    <link href="/notifications.css" rel="stylesheet" />
+    <meta name="msapplication-TileColor" content="#766df4">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Page loading styles-->
+    <style>
+      .page-loading {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        -webkit-transition: all .4s .2s ease-in-out;
+        transition: all .4s .2s ease-in-out;
+        background-color: #fff;
+        opacity: 0;
+        visibility: hidden;
+        z-index: 9999;
+      }
+      .page-loading.active {
+        opacity: 1;
+        visibility: visible;
+      }
+      .page-loading-inner {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        -webkit-transform: translateY(-50%);
+        transform: translateY(-50%);
+        -webkit-transition: opacity .2s ease-in-out;
+        transition: opacity .2s ease-in-out;
+        opacity: 0;
+      }
+      .page-loading.active > .page-loading-inner {
+        opacity: 1;
+      }
+      .page-loading-inner > span {
+        display: block;
+        font-size: 1rem;
+        font-weight: normal;
+        color: #666276;
+      }
+      .page-spinner {
+        display: inline-block;
+        width: 2.75rem;
+        height: 2.75rem;
+        margin-bottom: .75rem;
+        vertical-align: text-bottom;
+        border: .15em solid #bbb7c5;
+        border-right-color: transparent;
+        border-radius: 50%;
+        -webkit-animation: spinner .75s linear infinite;
+        animation: spinner .75s linear infinite;
+      }
+      @*@-webkit-keyframes spinner {
+        100% {
+          -webkit-transform: rotate(360deg);
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes spinner {
+        100% {
+          -webkit-transform: rotate(360deg);
+          transform: rotate(360deg);
+        }
+      }*@
+
+    </style>
+    <!-- Page loading scripts-->
+    <script>
+        (function () {
+            window.onload = function () {
+                var preloader = document.querySelector('.page-loading');
+                preloader.classList.remove('active');
+                setTimeout(function () {
+                    preloader.remove();
+                }, 2000);
+            };
+        })();
+
+    </script>
+    <!-- Vendor Styles-->
+    <link rel="stylesheet" media="screen" href="~/SiteFile/vendor/simplebar/dist/simplebar.min.css" />
+    <link rel="stylesheet" media="screen" href="~/SiteFile/vendor/tiny-slider/dist/tiny-slider.css" />
+    <link rel="stylesheet" media="screen" href="~/SiteFile/vendor/flatpickr/dist/flatpickr.min.css" />
+    <link rel="stylesheet" media="screen" href="~/SiteFile/vendor/persain-date/persian-datepicker.min.css" />
+    <!-- Main Theme Styles + Bootstrap-->
+    <link rel="stylesheet" media="screen" href="~/SiteFile/css/theme.min.css">
+    @RenderSection("Sheet", required: false)
+</head>
+<!-- Body-->
+<body dir="rtl">
+    @{       
+        
+        var name = string.IsNullOrEmpty(User.Identity.Name) ? "  " : User.Identity.Name.Split("@")[0];
+       
+    }
+    <!-- Page loading spinner-->
+    <div class="page-loading active">
+        <div class="page-loading-inner">
+            <div class="page-spinner"></div><span>لطفا منتظر باشید</span>
+        </div>
+    </div>
+    <main class="page-wrapper">
+        <!-- ForgotPassword In Modal-->
+        <div class="modal fade" id="ForgotPass-modal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered p-2 my-0 mx-auto" style="max-width: 500px;">
+                <div class="modal-content">
+                    <div class="modal-body px-0 py-2 py-sm-0">
+                        <button class="btn-close position-absolute top-0 end-0 mt-3 me-3" type="button" data-bs-dismiss="modal"></button>
+                        <div class="row mx-0 align-items-center">                           
+                            <div class="">                               
+                                <form asp-action="ForgotPassword" asp-controller="Account" method="post" class="needs-validation">
+                                    <div class="mb-4">
+                                        <label class="form-label mb-2" for="signin-email">پست الکترونیکی</label>
+                                        <input name="Email" class="form-control" type="email" id="signin-email" placeholder="ایمیل خود را وارد کنید" required>
+                                    </div>                                    
+                                    <button class="btn btn-primary btn-lg w-50" type="submit">ثبت</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Sign In Modal-->
+        <div class="modal fade" id="signin-modal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered p-2 my-0 mx-auto" style="max-width: 950px;">
+                <div class="modal-content">
+                    <div class="modal-body px-0 py-2 py-sm-0">
+                        <button class="btn-close position-absolute top-0 end-0 mt-3 me-3" type="button" data-bs-dismiss="modal"></button>
+                        <div class="row mx-0 align-items-center">
+                            <div class="col-md-6 border-end-md p-4 p-sm-5">
+                                <h2 class="h3 mb-4 mb-sm-5">سلام!<br>به سایت ما خوش آمدید.</h2><img class="d-block mx-auto rotate-img" src="~/SiteFile/img/signin-modal/signin.svg" width="344" alt="Illustartion">
+                                <div class="mt-4 mt-sm-5">هنوز ثبت نام نکرده اید؟ <a href="#signup-modal" data-bs-toggle="modal" data-bs-dismiss="modal">ثبت نام</a></div>
+                            </div>
+                            <div class="col-md-6 px-4 pt-2 pb-4 px-sm-5 pb-sm-5 pt-md-5">
+                               <a class="btn btn-outline-info w-100 mb-3" href="~/Account/ExternalLogin?provider=Google"><i class="fi-google fs-lg ms-1"></i>ورود با اکانت گوگل</a>
+                               
+                                <div class="d-flex align-items-center py-3 mb-3">
+                                    <hr class="w-100">
+                                    <div class="px-3">یـا</div>
+                                    <hr class="w-100">
+                                </div>
+                                <form asp-action="Login" asp-controller="Account" method="post" class="needs-validation">
+                                    <div class="mb-4">
+                                        <label class="form-label mb-2" for="signin-email">پست الکترونیکی</label>
+                                        <input name="Email" class="form-control" type="email" id="signin-email" placeholder="ایمیل خود را وارد کنید" required>
+                                    </div>
+                                    <div class="mb-4">
+                                        <div class="d-flex align-items-center justify-content-between mb-2">
+                                            <label class="form-label mb-0" for="signin-password">رمز عبور</label><a class="fs-sm" data-bs-toggle="modal" href="#ForgotPass-modal">رمز عبور را فراموش کرده اید؟</a>
+                                        </div>
+                                        <div class="password-toggle">
+                                            <input name="Password" class="form-control" type="password" id="signin-password" placeholder="پسوورد خود را وارد کنید" required>
+                                            <label class="password-toggle-btn" aria-label="Show/hide password">
+                                                <input class="password-toggle-check" type="checkbox"><span class="password-toggle-indicator"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-primary btn-lg w-100" type="submit">ورود به حساب کاربری</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Sign Up Modal-->
+        <div class="modal fade" id="signup-modal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered p-2 my-0 mx-auto" style="max-width: 950px;">
+                <div class="modal-content">
+                    <div class="modal-body px-0 py-2 py-sm-0">
+                        <button class="btn-close position-absolute top-0 end-0 mt-3 me-3" type="button" data-bs-dismiss="modal"></button>
+                        <div class="row mx-0 align-items-center">
+                            <div class="col-md-6 border-end-md p-4 p-sm-5">
+                                <h2 class="h3 mb-4 mb-sm-5">در سایت ما با اطمینان ثبت نام کنید.</h2>
+                                <ul class="list-unstyled mb-4 mb-sm-5">
+                                    <li class="d-flex mb-2"><i class="fi-check-circle text-primary mt-1 me-2"></i><span>افزودن و ارتقا آگهی</span></li>
+                                    <li class="d-flex mb-2"><i class="fi-check-circle text-primary mt-1 me-2"></i><span>مدیریت لیست علاقه مندی ها</span></li>
+                                    <li class="d-flex mb-0"><i class="fi-check-circle text-primary mt-1 me-2"></i><span>ثبت نظر</span></li>
+                                </ul><img class="d-block mx-auto" src="~/SiteFile/img/signin-modal/signup.svg" width="344" alt="Illustartion">
+                                <div class="mt-sm-4 pt-md-3">ثبت نام کرده اید؟ <a href="#signin-modal" data-bs-toggle="modal" data-bs-dismiss="modal">ورود به حساب کاربری</a></div>
+                            </div>
+                            <div class="col-md-6 px-4 pt-2 pb-4 px-sm-5 pb-sm-5 pt-md-5">
+                                <a class="btn btn-outline-info w-100 mb-3" href="#"><i class="fi-google fs-lg ms-1"></i>ورود با اکانت گوگل</a>
+                                <div class="d-flex align-items-center py-3 mb-3">
+                                    <hr class="w-100">
+                                    <div class="px-3">یـا</div>
+                                    <hr class="w-100">
+                                </div>
+                                <form asp-action="Register" asp-controller="Account" method="post" class="needs-validation">
+
+                                    <div class="mb-4">
+                                        <label class="form-label" for="signup-name">نام و نام خانوادگی</label>
+                                        <input class="form-control" name="FullName" type="text" id="signup-name" placeholder="نام و نام خانوادگی خود را وارد کنید" required>
+
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label" for="signup-email">پست الکترونیکی</label>
+                                        <input class="form-control" name="Email" type="email" id="signup-email" placeholder="ایمیل خود را وارد کنید" required>
+
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label" for="signup-password">رمز عبور <span class='fs-sm text-muted'>حداقل 8 کاراکتر</span></label>
+                                        <div class="password-toggle">
+                                            <input class="form-control" name="Password" type="password" id="signup-password" minlength="8" required>
+                                            <label class="password-toggle-btn" aria-label="Show/hide password">
+                                                <input class="password-toggle-check" type="checkbox"><span class="password-toggle-indicator"></span>
+                                            </label>
+                                        </div>
+
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label" for="signup-password-confirm">تایید رمز عبور</label>
+                                        <div class="password-toggle">
+                                            <input class="form-control" name="ConfirmPassword" type="password" id="signup-password-confirm" minlength="8" required>
+                                            <label class="password-toggle-btn" aria-label="Show/hide password">
+                                                <input class="password-toggle-check" type="checkbox"><span class="password-toggle-indicator"></span>
+                                            </label>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-check mb-4">
+                                        <input class="form-check-input" type="checkbox" id="agree-to-terms" required>
+                                        <label class="form-check-label" for="agree-to-terms"> با ثبت نام در این سایت <a href='#'> شرایط</a> و <a href='#'>قوانین </a> سایت را قبول دارم.</label>
+                                    </div>
+                                    <button class="btn btn-primary btn-lg w-100" type="submit">ثبت نام</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Navbar-->
+        <header class="navbar navbar-expand-lg navbar-light fixed-top" data-scroll-header>
+            <div class="container">
+                <a class="navbar-brand ms-3 ms-xl-4 logo" href="city-guide-home-v1.html"><img class="d-block" src="~/SiteFile/img/logo/logo-dark.svg" width="116" alt="Finder"></a>
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <div style="padding-left: 45px;" class="dropdown d-none d-lg-block order-lg-3  my-n2 me-3">
+                        <a class="d-block py-2" href="city-guide-account-info.html"><img class="rounded-circle" src="~/SiteFile/img/avatars/36.png" width="40" alt="Annette Black"></a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <div class="d-flex align-items-start border-bottom px-3 py-1 mb-2" style="width: 16rem;">
+                                <img class="rounded-circle" src="~/SiteFile/img/avatars/24.png" width="48" alt="Annette Black">
+                                <div class="pe-2 text-right">
+                                    <h6 class="fs-base mb-0">@name</h6>
+                                    <div class="fs-xs py-2">@User.Identity.Name</div>
+                                </div>
+                            </div><a class="dropdown-item" href="~/PersonInformation/PersonalInformation"><i class="fi-user opacity-60 me-2"></i>اطلاعات فردی</a><a class="dropdown-item" href="~/PersonInformation/PersonalFavorite"><i class="fi-heart opacity-60 me-2"></i>مورد علاقه های من</a><a class="dropdown-item" href="city-guide-vendor-businesses.html"><i class="fi-home opacity-60 me-2"></i>لیست آگهی های من</a><a class="dropdown-item" href="~/PersonInformation/PersonalComments"><i class="fi-star opacity-60 me-2"></i>لیست نظرات من</a><a class="dropdown-item" href="city-guide-account-notifications.html"><i class="fi-bell opacity-60 me-2"></i>ایمیل های اطلاع رسانی من</a>
+                            <div class="dropdown-divider"></div><a class="dropdown-item" href="#">راهنما</a><a class="dropdown-item" href="~/Account/Logout">خروج</a>
+                        </div>
+                    </div>
+                    <a class="btn btn-primary btn-sm rounded-pill ms-2 order-lg-3" asp-action="AddBussiness" asp-controller="Bussiness"><i class="fi-plus me-2"></i>ثبت<span class='d-none d-sm-inline'> کسب و کار</span></a>
+                }
+                else
+                {
+
+                    <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button><a class="btn btn-sm text-primary d-none d-lg-block order-lg-3" href="#signup-modal" data-bs-toggle="modal"><i class="fi-user me-2"></i>ثبت نام</a><a class="btn btn-sm text-primary d-none d-lg-block order-lg-3" href="#signin-modal" data-bs-toggle="modal"><i class="fi-user me-2"></i>ورود به حساب کاربری</a>
+                }
+                <div class="collapse navbar-collapse order-lg-2" id="navbarNav">
+                    <ul class="navbar-nav navbar-nav-scroll" style="max-height: 35rem;">
+
+                        <!-- Menu items-->
+                        <li class="nav-item dropdown active">
+                            <a class="nav-link" asp-action="Index" asp-controller="Home" role="button" data-bs-toggle="dropdown" aria-expanded="false">خانه</a>
+                           
+                        </li>
+                       
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">ثبت آگهی</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" asp-action="AddBussiness" asp-controller="Bussiness">ثبت کسب و کار</a></li>
+                               
+                                <li><a class="dropdown-item" href="/PersonInformation/GetUserBussiness">لیست آگهی ها</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">با Finder</a>
+                            <ul class="dropdown-menu">                                
+
+                                <li><a class="dropdown-item" href="/WithFinder/ContactUs">تماس با ما</a></li>
+                                
+                            </ul>
+                        </li>
+                        <li class="nav-item d-lg-none"><a class="nav-link" href="#signin-modal" data-bs-toggle="modal"><i class="fi-user me-2"></i>ورود</a></li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+        @RenderBody()
+
+    </main>
+    <!-- Footer-->
+    <footer class="footer pt-lg-5 pt-4 bg-dark text-light">
+        <div class="container mb-4 py-4 pb-lg-5">
+            <div class="row gy-4">
+                <div class="col-lg-3 col-md-6 col-sm-4">
+                    <div class="mb-4 pb-sm-3"><a class="d-inline-block" href="city-guide-home-v1.html"><img src="~/SiteFile/img/logo/logo-light.svg" width="116" alt="Logo"></a></div>
+                    <ul class="nav nav-light flex-column">
+                        <li class="nav-item mb-2"><a class="nav-link p-0 fw-normal text-light text-nowrap" href="mailto:example@gmail.com"><i class="fi-mail mt-n1 ms-1 align-middle text-primary"></i>example@gmail.com</a></li>
+                        <li class="nav-item mb-2"><a class="nav-link p-0 fw-normal text-light text-nowrap" href="tel:4065550120"><i class="fi-device-mobile mt-n1 ms-1 align-middle text-primary"></i>(406) 555-0120</a></li>
+                    </ul>
+                </div>
+                <!-- Links-->
+                <div class="col-lg-2 col-md-3 col-sm-4">
+                    <h3 class="fs-base text-light">لینک های سریع</h3>
+                    <ul class="list-unstyled fs-sm">
+                        <li><a class="nav-link-light" href="#">شهرهای برتر</a></li>
+                        <li><a class="nav-link-light" href="#">اقامتگاه</a></li>
+                        <li><a class="nav-link-light" href="#">رستوران و کافی شاپ</a></li>
+                        <li><a class="nav-link-light" href="#">رویدادها</a></li>
+                    </ul>
+                </div>
+                <!-- Links-->
+                <div class="col-lg-2 col-md-3 col-sm-4">
+                    <h3 class="fs-base text-light">حساب کاربری</h3>
+                    <ul class="list-unstyled fs-sm">
+                        <li><a class="nav-link-light" href="#">پروفایل من</a></li>
+                        <li><a class="nav-link-light" href="#">مورد علاقه ها</a></li>
+                        <li><a class="nav-link-light" href="#">کسب و کارهای من</a></li>
+                        <li><a class="nav-link-light" href="#">ثبت کسب و کار جدید</a></li>
+                    </ul>
+                </div>
+                <!-- Subscription form-->
+                <div class="col-lg-4 offset-lg-1">
+                    <h3 class="h5 font-vazir text-light">مشترک شدن در خبرنامه ما</h3>
+                    <p class="fs-sm mb-4 opacity-60">کسب و کارهای خوب را از دست ندهید!</p>
+                    <form class="form-group form-group-light rounded-pill" style="max-width: 500px;">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text text-muted"><i class="fi-mail"></i></span>
+                            <input class="form-control" type="email" placeholder="ایمیل شما">
+                        </div>
+                        <button class="btn btn-primary btn-sm rounded-pill" type="button">ارسال</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="py-4 border-top border-light">
+            <div class="container d-flex flex-column flex-lg-row align-items-center justify-content-between py-2">
+                <!-- Copyright-->
+                <p class="fs-sm text-center text-sm-start mb-4"><span class="text-light opacity-50">© تمام حقوق این سایت محفوظ است . ارائه شده در سایت </span><a class="nav-link-light fw-bold" href="https://createx.studio/" target="_blank" rel="noopener">Createx Studio</a></p>
+                <div class="d-flex flex-lg-row flex-column align-items-center order-lg-2 order-1 ms-lg-4 mb-lg-0 mb-4">
+                    <!-- Links-->
+                    <div class="d-flex flex-wrap fs-sm mb-lg-0 mb-4 pe-lg-4"><a class="nav-link-light px-2 mx-1" href="#">درباره ما</a><a class="nav-link-light px-2 mx-1" href="#">مقالات</a><a class="nav-link-light px-2 mx-1" href="#">پشتیبانی</a><a class="nav-link-light px-2 mx-1" href="#">تماس با ما</a></div>
+                    <div class="d-flex align-items-center">
+                        <!-- Language switcher-->
+                        <div class="dropdown">
+                            <a class="nav-link nav-link-light dropdown-toggle fs-sm align-items-center p-0 fw-normal" href="#" id="langSwitcher" data-bs-toggle="dropdown" role="button" aria-expanded="false"><i class="fi-globe mt-n1 me-2 align-middle"></i>انتخاب زبان</a>
+                            <ul class="dropdown-menu dropdown-menu-dark my-1" aria-labelledby="langSwitcher">
+                                <li><a class="dropdown-item text-nowrap py-1" href="#"><img class="me-2" src="img/flags/de.png" width="20" alt="Deutsch">آلمانی</a></li>
+                                <li><a class="dropdown-item text-nowrap py-1" href="#"><img class="me-2" src="img/flags/fr.png" width="20" alt="Français">فرانسوی</a></li>
+                                <li><a class="dropdown-item text-nowrap py-1" href="#"><img class="me-2" src="img/flags/es.png" width="20" alt="Español">اسپانیول</a></li>
+                            </ul>
+                        </div>
+                        <!-- Socials-->
+                        <div class="ms-4 pe-lg-2 text-nowrap"><a class="btn btn-icon btn-translucent-light btn-xs rounded-circle ms-2" href="#"><i class="fi-facebook"></i></a><a class="btn btn-icon btn-translucent-light btn-xs rounded-circle ms-2" href="#"><i class="fi-twitter"></i></a><a class="btn btn-icon btn-translucent-light btn-xs rounded-circle ms-2" href="#"><i class="fi-telegram"></i></a><a class="btn btn-icon btn-translucent-light btn-xs rounded-circle ms-2" href="#"><i class="fi-messenger"></i></a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Back to top button--><a class="btn-scroll-top" href="#top" data-scroll><span class="btn-scroll-top-tooltip text-muted fs-sm me-2">Top</span><i class="btn-scroll-top-icon fi-chevron-up">   </i></a>
+    <!-- Vendor scrits: js libraries and plugins-->
+    <script src="~/SiteFile/vendor/jquery-3.6.0.js"></script>
+    <script src="~/SiteFile/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/SiteFile/vendor/simplebar/dist/simplebar.min.js"></script>
+    <script src="~/SiteFile/vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js"></script>
+    <script src="~/SiteFile/vendor/tiny-slider/dist/min/tiny-slider.js"></script>
+    <script src="~/SiteFile/vendor/flatpickr/dist/flatpickr.min.js"></script>
+    <script src="~/SiteFile/vendor/persain-date/persian-date.js"></script>
+    <script src="~/SiteFile/vendor/persain-date/persian-datepicker.min.js"></script>
+    <script src="~/notifications.js"></script>
+    <!--Notification JS-->
+    <script src="~/notifications.js"></script>
+    <script src="/Custom.js"></script>
+    <!--END Notification JS-->
+    <!-- Main theme script-->
+    <script src="~/SiteFile/js/theme.min.js"></script>
+    <script>
+        $('#date-event').persianDatepicker({
+            initialValue: false,
+            format: 'YYYY/MM/DD'
+        });
+    </script>
+    @RenderSection("script", required: false)
+    <partial name="_MessageNotif" />
+</body>
+</html>

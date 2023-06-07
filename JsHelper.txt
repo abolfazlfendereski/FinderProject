@@ -1,0 +1,15 @@
+element.classList.add("mystyle"); for Add Class To Tag Js
+
+
+@*<div class="col-4">
+    <img id="ModalImage2" class="rounded rounded-md-3 mb-2 mb-md-3" src="~/SiteFile/img/city-guide/single/02.jpg" alt="Gallery thumbnail">
+    <img id="ModalImage3" class="rounded rounded-md-3" src="~/SiteFile/img/city-guide/single/03.jpg" alt="Gallery thumbnail">
+</div>
+<div class="col-8">
+<img class="rounded rounded-md-3" id="ModalImage1" src="~/SiteFile/img/city-guide/single/01.jpg" alt="Gallery thumbnail">
+</div>*@
+
+
+
+
+file-uploader-grid  
